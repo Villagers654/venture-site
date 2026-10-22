@@ -10,10 +10,20 @@
 
   // Performance chart with a metric toggle.
   $("legend").innerHTML = D.runtimes.map((r, i) => `<span><i class="${i ? "c" + i : "v"}"></i>${esc(r)}</span>`).join("");
+  const TITLE = { fps: "Fastest in <em>every</em> game we tested.", low: "Smooth <em>no matter what.</em>" };
   const SUB = {
     fps: "Average fps. Higher is better.",
     low: "Slowest 1% of frames. Higher is better.",
   };
+  // Both headlines share one height (the taller one) so the toggle below never moves.
+  function fitTitle() {
+    const h = $("metric-title"), cur = h.innerHTML;
+    h.style.minHeight = "";
+    const tall = Math.max(...Object.values(TITLE).map((t) => { h.innerHTML = t; return h.offsetHeight; }));
+    h.innerHTML = cur; h.style.minHeight = tall + "px";
+  }
+  addEventListener("resize", fitTitle);
+  document.fonts.ready.then(fitTitle);
   function chart(metric) {
     const k = metric === "low" ? 1 : 0;
     const max = Math.max(...D.h2h.flatMap((g) => g.v.filter(Boolean).map((x) => x[k])));
@@ -27,6 +37,7 @@
       return `<div class="group"><div class="cols">${cols}</div><div class="gname">${esc(g.short)}<span>${ratio.toFixed(1)}× faster</span></div></div>`;
     }).join("");
     $("metric-sub").textContent = SUB[metric];
+    $("metric-title").innerHTML = TITLE[metric];
   }
   document.querySelectorAll("[data-metric]").forEach((btn) => btn.addEventListener("click", () => {
     document.querySelectorAll("[data-metric]").forEach((b) => b.setAttribute("aria-selected", b === btn));
