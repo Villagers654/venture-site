@@ -37,8 +37,7 @@
   // Compatibility totals and grid.
   const total = [D.games.length, ...[0, 1, 2, 3].map((j) => D.games.filter((g) => g[3] && g[3][j]).length)];
   $("totals").innerHTML = D.runtimes.map((r, i) => {
-    const m = i ? ["†", "‡"].filter((x) => D.games.some((g) => g[3] && g[3][i - 1] === x)).join("") : "";
-    return `<div class="t${i ? "" : " v"}"><span>${esc(r)}${m ? `<em>${m}</em>` : ""}</span><div class="tb"><i style="width:${(total[i] / D.games.length) * 100}%"></i></div><b>${total[i]} / ${D.games.length}</b></div>`;
+    return `<div class="t${i ? "" : " v"}"><span>${esc(r)}</span><div class="tb"><i style="width:${(total[i] / D.games.length) * 100}%"></i></div><b>${total[i]} / ${D.games.length}</b></div>`;
   }).join("");
   $("grid").innerHTML = D.games.map(([name, img, fps]) =>
     `<figure class="tile"><img src="assets/games/${img}.jpg" alt="" loading="lazy" width="640" height="360">
