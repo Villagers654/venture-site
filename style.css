@@ -150,7 +150,8 @@ sup { font-size: .7em; }
 .oss::after { background: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, .07) 1px, transparent 0) 0 0 / 26px 26px; mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); }
 .oss-in { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: clamp(80px, calc(var(--vh) * 13), 140px) var(--gutter) clamp(90px, calc(var(--vh) * 15), 150px); text-align: center; }
 .oss-brand { display: inline-flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 700; letter-spacing: -.01em; }
-.oss .src { margin-top: 40px; }
+.oss-cta { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.btn.sm.icon { padding: 0; aspect-ratio: 1; }
 .oss h2 { margin-top: 34px; font-size: clamp(38px, min(5vw, calc(var(--vh) * 7)), 64px); font-weight: 800; }
 .oss .src { border-radius: 16px; box-shadow: 0 4px 24px rgba(0, 0, 0, .25); }
 .oss .src svg { width: 22px; height: 22px; }
