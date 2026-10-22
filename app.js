@@ -17,7 +17,8 @@
   function chart(metric) {
     const k = metric === "low" ? 1 : 0;
     const max = Math.max(...D.h2h.flatMap((g) => g.v.filter(Boolean).map((x) => x[k])));
-    const games = [...D.h2h].sort((a, b) => a.v[0][k] - b.v[0][k]);
+    // One order for both metrics (by average fps) so games stay put when toggling.
+    const games = [...D.h2h].sort((a, b) => a.v[0][0] - b.v[0][0]);
     $("chart").innerHTML = games.map((g) => {
       const ratio = g.v[0][k] / best(g, k);
       const cols = g.v.map((x, i) => x
