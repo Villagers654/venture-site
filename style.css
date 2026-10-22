@@ -89,7 +89,7 @@ section { padding: clamp(56px, min(9vw, calc(var(--vh) * 11)), 120px) 0; }
 .legend i.v, .col.v { background: linear-gradient(180deg, #4b94ff, var(--accent)); }
 .legend i.c1, .col.c1 { background: var(--c1); } .legend i.c2, .col.c2 { background: var(--c2); }
 .legend i.c3, .col.c3 { background: var(--c3); } .legend i.c4, .col.c4 { background: var(--c4); }
-.chart { margin-top: 28px; display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(12px, 2.5vw, 40px); align-items: end; border-bottom: 1px solid var(--stroke-hi); padding-top: 30px; }
+.chart { margin-top: 28px; display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(12px, 2.5vw, 40px); align-items: end; padding-top: 30px; }
 .cols { height: clamp(160px, min(28vw, calc(var(--vh) * 100 - 500px)), 380px); display: flex; align-items: flex-end; gap: clamp(3px, .5vw, 8px); }
 .col { flex: 1; height: var(--h); min-height: 4px; border-radius: 8px 8px 0 0; position: relative; transition: height .5s cubic-bezier(.2,.8,.2,1); }
 .col.v { box-shadow: 0 0 22px rgba(0,100,224,.45); }
