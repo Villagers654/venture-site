@@ -24,8 +24,11 @@ env:
   VENTURE_REPO: ${{ vars.VENTURE_REPO || 'Villagers654/Venture' }}
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v5
       - name: Latest release
