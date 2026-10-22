@@ -48,17 +48,21 @@
   const repoUrl = (rel) => "https://github.com/" + ((rel && rel.repo) || document.documentElement.dataset.repo);
   const platform = (name) => (/win/i.test(name) ? "Windows" : /linux/i.test(name) ? "Linux" : "");
 
-  // Download buttons point at the newest release's Windows archive, else the releases page.
+  // The visitor's desktop OS: Linux (not Android) gets the Linux build, everyone else Windows.
+  const ua = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent || "";
+  const os = /linux/i.test(ua) && !/android/i.test(navigator.userAgent || "") ? "Linux" : "Windows";
+  document.querySelector("[data-dl-label]").textContent = "Download for " + os;
+
+  // Download buttons point at the newest release's archive for that OS, else the releases page.
   function render(rel) {
     const repo = repoUrl(rel);
     document.querySelectorAll("[data-repo]").forEach((a) => (a.href = repo));
     document.querySelectorAll("[data-releases], [data-dl]").forEach((a) => (a.href = repo + "/releases"));
     document.querySelectorAll("[data-issues]").forEach((a) => (a.href = repo + "/issues"));
     const assets = ((rel && rel.assets) || []).filter((a) => /\.(zip|tar\.gz|tar\.xz|AppImage)$/i.test(a.name));
-    if (!assets.length) return;
-    const win = assets.find((a) => platform(a.name) === "Windows") || assets[0];
-    document.querySelectorAll("[data-dl]").forEach((a) => (a.href = win.url));
-    document.querySelector("[data-dl-label]").textContent = "Download for " + (platform(win.name) || "your PC");
+    const pick = assets.find((a) => platform(a.name) === os);
+    if (!pick) return;
+    document.querySelectorAll("[data-dl]").forEach((a) => (a.href = pick.url));
   }
 
   fetch("release.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).catch(() => null).then(render);
