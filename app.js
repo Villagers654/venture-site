@@ -10,7 +10,7 @@
 
   // Performance chart with a metric toggle.
   $("legend").innerHTML = D.runtimes.map((r, i) => `<span><i class="${i ? "c" + i : "v"}"></i>${esc(r)}</span>`).join("");
-  const TITLE = { fps: "Fastest in <em>every</em> game we tested.", low: "Smooth <em>no matter what.</em>" };
+  const TITLE = { fps: "Fastest in <em>every</em> game.", low: "Always <em>smooth.</em>" };
   const SUB = {
     fps: "Average fps. Higher is better.",
     low: "Slowest 1% of frames. Higher is better.",
