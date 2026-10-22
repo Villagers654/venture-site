@@ -2,7 +2,7 @@
 // Values: [fps, 1% low fps] per runtime; null = did not reach gameplay. Marks: "*" fewer pixels,
 // "†" modified to run, "‡" configuration changed to run.
 window.VENTURE_DATA = {
-  runtimes: ["Venture", "Refract Native", "Refract emulator", "AXRB 2.0", "AXRB 1.0.4"],
+  runtimes: ["Venture", "Refract Native", "Refract emulator", "AXRB 2.0.0", "AXRB 1.0.4"],
   h2h: [
     { name: "North Star", short: "North Star", img: "northstar",
       v: [[289, 208], [151, 102], [106, 65], [93, 74, "*"], [101, 63, "*‡"]] },
@@ -15,7 +15,7 @@ window.VENTURE_DATA = {
     { name: "Asgard's Wrath 2", short: "Asgard's Wrath 2", img: "aw2",
       v: [[471, 386], [247, 185], null, [152, 125, "‡"], null] },
   ],
-  // Which competitors reached gameplay (Refract Native, Refract emulator, AXRB 2.0, AXRB 1.0.4).
+  // Which competitors reached gameplay (Refract Native, Refract emulator, AXRB 2.0.0, AXRB 1.0.4).
   games: [
     ["North Star", "northstar", 289, [1, 1, 1, "‡"]], ["Batman: Arkham Shadow", "batman", 345, [1, 1, 1, "‡"]],
     ["Assassin's Creed Nexus", "acnexus", 290, [1, 1, 1, "‡"]], ["Asgard's Wrath 2", "aw2", 471, [1, 0, "‡", 0]],
