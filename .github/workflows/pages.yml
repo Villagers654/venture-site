@@ -1,0 +1,52 @@
+# Publishes the site to GitHub Pages. The download buttons read release.json, written here from the
+# Venture repo's Releases API; the schedule (or a "venture-release" dispatch) picks up new releases.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 * * * *"
+  repository_dispatch:
+    types: [venture-release]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  VENTURE_REPO: ${{ vars.VENTURE_REPO || 'Villagers654/Venture' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        # The newest published full release, else the newest pre-release; {"repo": ...} when there is
+        # none or the repo is not readable, so the buttons fall back to the releases page.
+        run: |
+          releases=$(gh api "repos/${VENTURE_REPO}/releases?per_page=20" 2>/dev/null || echo '[]')
+          jq '
+            [.[] | select(.draft | not)] as $r
+            | ([$r[] | select(.prerelease | not)] + $r)[0] // {}
+            | if .tag_name then {
+                tag: .tag_name, name, published_at, html_url, prerelease,
+                assets: [.assets[] | {name, size, url: .browser_download_url, digest}]
+              } else {} end
+            | . + {repo: env.VENTURE_REPO}' <<<"$releases" > release.json
+          cat release.json
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - uses: actions/deploy-pages@v4
+        id: deployment

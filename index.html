@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-repo="Villagers654/Venture">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Venture: your Quest games, native on PC VR</title>
+  <meta name="description" content="Play the Meta Quest games you own on your PC VR headset. No emulator, no virtual machine. Free and open source.">
+  <meta name="theme-color" content="#1a1b1e">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Venture: your Quest games, native on PC VR">
+  <meta property="og:description" content="Fastest in every game we tested, up to 2× the next-best way to play Quest games on PC.">
+  <meta property="og:image" content="assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="Venture home"><img src="assets/logo.svg" alt="" width="36" height="36"><span>Venture</span></a>
+    <nav class="links" aria-label="Sections">
+      <a href="#performance">Performance</a>
+      <a href="#games">Games</a>
+          </nav>
+    <div class="nav-cta">
+      <a class="btn ghost sm" data-repo href="#">GitHub</a>
+      <a class="btn primary sm" data-dl href="#">Download</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <h1 class="display">Your Quest games.<br><em>Native on PC VR.</em></h1>
+        <p class="lede">Play the Quest games you own on your PC headset, at full PC speed.</p>
+        <div class="cta-row">
+          <a class="btn primary lg" data-dl href="#">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-dl-label>Download for Windows</span>
+          </a>
+          <a class="btn ghost lg" data-repo href="#">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <img class="hero-art" src="assets/hero-launcher.webp" alt="The Venture launcher: game library, a download in progress and Batman: Arkham Shadow ready to play at 345 fps" width="2129" height="1882">
+  </section>
+
+  <section id="performance" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display">Faster in <em>every</em> game we tested.</h2>
+        <div class="seg" role="tablist" aria-label="Metric">
+          <button role="tab" aria-selected="true" data-metric="fps">Average fps</button>
+          <button role="tab" aria-selected="false" data-metric="low">1% lows</button>
+        </div>
+      </div>
+      <p class="sub" id="metric-sub">Average fps. Higher is better.</p>
+      <div class="legend" id="legend"></div>
+      <div class="chart" id="chart"></div>
+      <div class="foot"><span>Core Ultra 9 285K · RTX 5090 · 2800×2856 per eye</span><span><b>*</b> fewer pixels · <b>†</b> modified to run · <b>‡</b> configuration changed to run</span></div>
+    </div>
+  </section>
+
+  <section id="why" class="why">
+    <div class="wrap">
+      <h2 class="display">Why it's <em>fast</em>.</h2>
+      <ol class="steps">
+        <li><h3>System libraries run as PC code.</h3><p>Android's C and math calls execute natively, not as translated ARM.</p></li>
+        <li><h3>Java runs on a desktop JVM.</h3><p>Game Java is compiled by HotSpot's optimizing JIT.</p></li>
+        <li><h3>Frames go straight to your headset.</h3><p>Eyes reach OpenXR from inside the game's own process.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="wrap">
+      <div class="sec-head split">
+        <div>
+          <h2 class="display">Runs <em>all 20</em>. Next best: 5.</h2>
+          <p class="sub"><b>14</b> of them run only on Venture.</p>
+        </div>
+        <div class="totals" id="totals"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="foot"><span>Core Ultra 9 285K · RTX 5090</span><span><b>†</b> modified to run some titles · <b>‡</b> configuration changed to run some titles</span></div>
+    </div>
+  </section>
+
+  <section id="why-compat" class="why">
+    <div class="wrap">
+      <h2 class="display">Why it runs <em>all 20</em>.</h2>
+      <ol class="steps">
+        <li><h3>OpenGL ES through ANGLE.</h3><p>Older GLES games like Beat Saber render on your PC GPU.</p></li>
+        <li><h3>32-bit games get their own JIT.</h3><p>First Contact runs right next to 64-bit titles.</p></li>
+        <li><h3>Apps start like they do on a Quest.</h3><p>Launch activities resolve the way Android does, so Vader Immortal starts as-is.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="oss" aria-labelledby="oss-title">
+    <div class="oss-in">
+      <div class="oss-brand"><img src="assets/logo.svg" alt="" width="56" height="56"><span>Venture</span></div>
+      <h2 class="display" id="oss-title">Free and<br><em>open source.</em></h2>
+      <a class="btn ghost lg src" data-repo href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>View source code</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <div class="brand"><img src="assets/logo.svg" alt="" width="28" height="28"><span>Venture</span></div>
+  <p>GPL-3.0. Not affiliated with Meta. Play only games you own. Game names and art belong to their owners.</p>
+  <nav><a data-repo href="#">GitHub</a><a data-releases href="#">Releases</a><a data-issues href="#">Report an issue</a></nav>
+</footer>
+</body>
+</html>
