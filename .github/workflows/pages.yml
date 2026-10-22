@@ -1,12 +1,10 @@
 # Publishes the site to GitHub Pages. The download buttons read release.json, written here from the
-# Venture repo's Releases API; the schedule (or a "venture-release" dispatch) picks up new releases.
+# Venture repo's Releases API; a "venture-release" dispatch or a manual run picks up a new release between pushes.
 name: Pages
 
 on:
   push:
     branches: [main]
-  schedule:
-    - cron: "17 * * * *"
   repository_dispatch:
     types: [venture-release]
   workflow_dispatch:

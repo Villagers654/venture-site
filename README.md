@@ -1,6 +1,6 @@
 # Venture website
 
-The website for [Venture](https://github.com/Villagers654/Venture). Plain HTML, CSS and JavaScript: no build step, no dependencies.
+The website for [Venture](https://github.com/Villagers654/Venture).
 
 ## Run it
 
@@ -22,8 +22,3 @@ Then open http://localhost:8765.
 
 To add a game, put its art in `assets/games/` and add a `[name, art id, fps, [other runtimes]]` row to `games` in `data.js`.
 
-## Releases
-
-`.github/workflows/pages.yml` deploys on every push to `main` and hourly. It writes `release.json` from the
-Venture repo's newest release, and `app.js` points the download buttons at it. To test the buttons locally,
-create a `release.json` in the same shape; it is gitignored.
