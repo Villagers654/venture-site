@@ -205,3 +205,5 @@ sup { font-size: .7em; }
   .gname { padding-top: 16px; font-size: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+.site-src { color: inherit; text-decoration: underline; text-decoration-color: var(--stroke-hi); text-underline-offset: 3px; }
+.site-src:hover { color: var(--text2); }
