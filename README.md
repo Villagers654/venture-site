@@ -27,7 +27,3 @@ To add a game, put its art in `assets/games/` and add a `[name, art id, fps, [ot
 `.github/workflows/pages.yml` deploys on every push to `main` and hourly. It writes `release.json` from the
 Venture repo's newest release, and `app.js` points the download buttons at it. To test the buttons locally,
 create a `release.json` in the same shape; it is gitignored.
-
-## License
-
-GPL-3.0.
