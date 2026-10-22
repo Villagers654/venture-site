@@ -39,6 +39,8 @@ section { padding: clamp(56px, min(9vw, calc(var(--vh) * 11)), 120px) 0; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 999px; font-weight: 600; white-space: nowrap; transition: transform .15s, box-shadow .15s, background .15s; }
 .btn svg { width: 22px; height: 22px; }
 .btn.sm { height: 38px; padding: 0 18px; font-size: 15px; }
+.btn.sm { gap: 8px; }
+.btn.sm svg { width: 17px; height: 17px; }
 .btn.lg { height: 60px; padding: 0 30px; font-size: 19px; }
 .btn.primary { background: linear-gradient(180deg, var(--accent-hi), var(--accent)); color: #fff; box-shadow: 0 8px 30px rgba(0, 100, 224, .4), inset 0 1px 0 rgba(255,255,255,.18); }
 .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 38px rgba(0, 100, 224, .55), inset 0 1px 0 rgba(255,255,255,.18); }
