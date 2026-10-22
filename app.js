@@ -31,9 +31,11 @@
     const games = [...D.h2h].sort((a, b) => a.v[0][0] - b.v[0][0]);
     $("chart").innerHTML = games.map((g) => {
       const ratio = g.v[0][k] / best(g, k);
-      const cols = g.v.map((x, i) => x
-        ? `<div class="col ${i ? "c" + i : "v"}" style="--h:${(x[k] / max) * 100}%" title="${esc(D.runtimes[i])}: ${x[k]}"><b>${x[k]}${marks(x[2])}</b></div>`
-        : `<div class="col dnf" title="${esc(D.runtimes[i])}: did not run"><b>DNF</b></div>`).join("");
+      const gmax = Math.max(...g.v.filter(Boolean).map((x) => x[k]));
+      // Each bar sits in a slot with its runtime's name (shown only by the phone layout's horizontal rows).
+      const cols = g.v.map((x, i) => `<div class="slot"><span class="rn">${esc(D.runtimes[i])}</span>${x
+        ? `<div class="col ${i ? "c" + i : "v"}" style="--h:${(x[k] / max) * 100}%;--g:${(x[k] / gmax) * 100}%" title="${esc(D.runtimes[i])}: ${x[k]}"><b>${x[k]}${marks(x[2])}</b></div>`
+        : `<div class="col dnf" title="${esc(D.runtimes[i])}: did not run"><b>DNF</b></div>`}</div>`).join("");
       return `<div class="group"><div class="cols">${cols}</div><div class="gname">${esc(g.short)}<span>${ratio.toFixed(1)}× faster</span></div></div>`;
     }).join("");
     $("metric-sub").textContent = SUB[metric];
