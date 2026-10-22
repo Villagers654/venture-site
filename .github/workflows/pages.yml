@@ -34,7 +34,7 @@ jobs:
         # The newest published full release, else the newest pre-release; {"repo": ...} when there is
         # none or the repo is not readable, so the buttons fall back to the releases page.
         run: |
-          releases=$(gh api "repos/${VENTURE_REPO}/releases?per_page=20" 2>/dev/null || echo '[]')
+          releases=$(gh api "repos/${VENTURE_REPO}/releases?per_page=20" 2>/dev/null) || releases='[]'
           jq '
             [.[] | select(.draft | not)] as $r
             | ([$r[] | select(.prerelease | not)] + $r)[0] // {}
