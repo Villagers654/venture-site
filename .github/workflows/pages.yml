@@ -47,6 +47,20 @@ jobs:
               } else {} end
             | . + {repo: env.VENTURE_REPO}' <<<"$releases" > release.json
           cat release.json
+      - name: Version assets
+        # Browsers and Cloudflare cache these for hours; a per-commit query makes each deploy load fresh copies.
+        run: |
+          python3 - "${GITHUB_SHA::7}" <<'PY'
+          import re, sys
+          v = sys.argv[1]
+          html = open("index.html").read()
+          html = re.sub(r'(href|src)="(style\.css|data\.js|app\.js|assets/[^"?]+)"', lambda m: f'{m[1]}="{m[2]}?v={v}"', html)
+          open("index.html", "w").write(html)
+          js = open("app.js").read()
+          assert 'assets/games/${img}.jpg"' in js
+          open("app.js", "w").write(js.replace('assets/games/${img}.jpg"', f'assets/games/${{img}}.jpg?v={v}"'))
+          PY
+          grep -o '?v=[0-9a-f]*' index.html app.js | sort | uniq -c
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
