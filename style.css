@@ -80,6 +80,8 @@ section { padding: clamp(56px, min(9vw, calc(var(--vh) * 11)), 120px) 0; }
 .sec-head.split { align-items: flex-start; flex-wrap: nowrap; }
 .sec-head.split > div:first-child { flex: 1 1 auto; min-width: 0; }
 .sec-head.split .totals { flex: 0 1 auto; margin-top: .4em; }
+.metric { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.metric-sub { font-size: 15px; color: var(--text2); }
 .seg { display: inline-flex; padding: 4px; background: var(--surface); border: 1px solid var(--stroke); border-radius: 999px; }
 .seg button { font: inherit; font-size: 15px; font-weight: 600; color: var(--text2); background: none; border: 0; height: 38px; padding: 0 18px; border-radius: 999px; cursor: pointer; }
 .seg button[aria-selected="true"] { background: #e4e6eb; color: #18191c; }
@@ -159,6 +161,7 @@ sup { font-size: .7em; }
 
 /* Stacked hero: narrow windows (side panels, split screen) and portrait screens. */
 @media (max-width: 900px), (max-aspect-ratio: 5/6) {
+  .metric { align-items: flex-start; }
   .sec-head.split { flex-wrap: wrap; } .sec-head.split .totals { width: min(560px, 100%); margin-top: 0; }
   .hero .hero-in { min-height: 0; padding-top: 56px; padding-bottom: 0; }
   .hero-copy { max-width: 700px; }
@@ -174,7 +177,7 @@ sup { font-size: .7em; }
   .hero { --hero-max: 2700px; --h1-max: 140px; --art-max: 1800px; }
   .legend, .foot, .t, .footer { font-size: 18px; }
   h2.display { font-size: clamp(30px, calc(var(--vh) * 6.4), 92px); }
-  .sub { font-size: 27px; max-width: 1000px; }
+  .sub { font-size: 27px; max-width: 1000px; } .metric-sub { font-size: 20px; }
   .cols { height: clamp(380px, calc(var(--vh) * 100 - 620px), 560px); }
   .totals { width: 760px; } .t { grid-template-columns: 230px 1fr 84px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
