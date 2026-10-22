@@ -30,4 +30,4 @@ create a `release.json` in the same shape; it is gitignored.
 
 ## License
 
-GPL-3.0. Game names and art belong to their owners.
+GPL-3.0.
