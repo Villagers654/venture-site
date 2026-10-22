@@ -58,7 +58,7 @@ jobs:
           open("index.html", "w").write(html)
           js = open("app.js").read()
           assert 'assets/games/${img}.jpg"' in js
-          open("app.js", "w").write(js.replace('assets/games/${img}.jpg"', f'assets/games/${{img}}.jpg?v={v}"'))
+          open("app.js", "w").write(js.replace('assets/games/${img}.jpg"', 'assets/games/${img}.jpg?v=' + v + '"'))
           PY
           grep -o '?v=[0-9a-f]*' index.html app.js | sort | uniq -c
       - uses: actions/configure-pages@v5
