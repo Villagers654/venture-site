@@ -22,7 +22,7 @@ window.VENTURE_DATA = {
     ["Resident Evil 4", "re4", 459, ["†", 0, 1, 0]], ["Cooking Simulator VR", "cooking", 556, [0, 1, 0, 0]],
     ["Beat Saber", "beatsaber", 753], ["Moss", "moss", 460], ["Moss: Book II", "moss2", 589],
     ["Vader Immortal I", "vader", 719], ["Vader Immortal II", "vader2", 511], ["Vader Immortal III", "vader3", 638],
-    ["TWD: Saints & Sinners", "twd", 935], ["Job Simulator", "jobsim", 694], ["Elixir", "elixir", 856],
+    ["TWD: Saints & Sinners", "twd", 497], ["Job Simulator", "jobsim", 694], ["Elixir", "elixir", 856],
     ["First Contact", "firstcontact", 343], ["Bait!", "bait", 245], ["Cactus Cowboy", "cactus", 392],
     ["V-Speedway", "vspeedway", 481], ["Epic Roller Coasters", "epic", 568],
   ],
