@@ -192,6 +192,7 @@ sup { font-size: .7em; }
 }
 @media (max-width: 760px) {
   .links, .nav-cta .ghost { display: none; }
+  .nav-cta .ghost.icon { display: inline-flex; }
   .chart { grid-template-columns: 1fr; gap: 40px; }
   .steps { grid-template-columns: 1fr; }
   .steps li, .steps li + li { padding: 22px 0 6px; border-left: 0; }
