@@ -38,7 +38,7 @@ window.VENTURE_DATA = {
   // validated there, left out of the totals). "extra": Linux-only games for now. "games": Venture fps where measured
   // (others show "Runs"), then whether Refract reached gameplay (games not listed were not tried on Refract).
   linux: {
-    hw: "Ryzen 9 7940HS · Radeon RX 7700S · 2000×2040 per eye · preliminary",
+    hw: "Ryzen 9 7940HS · Radeon RX 7700S · 2000×2040 per eye",
     runtimes: ["Venture", "Refract Waydroid"],
     h2h: [
       { name: "North Star", short: "North Star", img: "northstar", v: [[143, 98], [55, 18]] },
