@@ -12,8 +12,12 @@
       testing: (g) => ALL.linux.testing.includes(g[1]),
       list: [...ALL.games, ...ALL.linux.extra].sort((a, b) => ALL.linux.testing.includes(a[1]) - ALL.linux.testing.includes(b[1])),
       fps: (g) => (ALL.linux.games[g[1]] || [null])[0], ran: (g, j) => j === 0 && (ALL.linux.games[g[1]] || [])[1],
-      tried: (g, j) => j === 0 && g[1] in ALL.linux.games },
+      tried: () => true },  // Refract Waydroid was attempted on every Linux title
   };
+  // Grid order (data.js "order"); on Linux the games still being tested go last.
+  const rank = (g) => ALL.order.indexOf(g[1]);
+  PLAT.windows.list = [...PLAT.windows.list].sort((a, b) => rank(a) - rank(b));
+  PLAT.linux.list = [...PLAT.linux.list].sort((a, b) => PLAT.linux.testing(a) - PLAT.linux.testing(b) || rank(a) - rank(b));
   let D = PLAT.windows, metric = "fps";
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);

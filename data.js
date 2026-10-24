@@ -20,6 +20,10 @@ window.VENTURE_DATA = {
     { name: "Deadpool VR", short: "Deadpool", img: "deadpool",
       v: [[335, 229, "*"], null, null, [224, 108, "*"], null] },
   ],
+  // The grid's order: what people care about most first (popular Quest exclusives lead), series kept together in order.
+  order: ["batman", "aw2", "beatsaber", "re4", "acnexus", "ironman", "deadpool", "hitman3", "vader", "vader2", "vader3",
+    "twd", "moss", "moss2", "climb2", "jobsim", "firstcontact", "puzzling", "cooking", "elixir", "epic", "bait",
+    "cactus", "vspeedway", "northstar"],
   // Which competitors reached gameplay (Refract Native, Refract emulator, AXRB 2.0.0, AXRB 1.0.4).
   games: [
     ["North Star", "northstar", 289, [1, 1, 1, "‡"]], ["Batman: Arkham Shadow", "batman", 345, [1, 1, 1, "‡"]],
@@ -36,7 +40,7 @@ window.VENTURE_DATA = {
   // Linux (preliminary): the 2026-10-23 Linux head-to-head, Venture vs Refract 1.0.2 in Waydroid, mean of 2 runs each.
   // 1% low here is 1000 / p99 frame time. Every game above runs on Venture Linux except those in "testing" (not yet
   // validated there, left out of the totals). "extra": Linux-only games for now. "games": Venture fps where measured
-  // (others show "Runs"), then whether Refract reached gameplay (games not listed were not tried on Refract).
+  // (null or unlisted: "Runs"), then whether Refract reached gameplay. Refract was attempted on every Linux title.
   linux: {
     hw: "Ryzen 9 7940HS · Radeon RX 7700S · 2000×2040 per eye",
     runtimes: ["Venture", "Refract Waydroid"],
@@ -48,7 +52,8 @@ window.VENTURE_DATA = {
       { name: "Bait!", short: "Bait!", img: "bait", v: [[70, 68], [26, 22, "*"]] },
       { name: "Puzzling Places", short: "Puzzling Places", img: "puzzling", v: [[205, 180], [40, 17]] },
     ],
-    games: { northstar: [143, 1], aw2: [211, 1], cooking: [302, 1], jobsim: [180, 1], bait: [70, 1], puzzling: [205, 1] },
+    games: { northstar: [143, 1], aw2: [211, 1], cooking: [302, 1], jobsim: [180, 1], bait: [70, 1], puzzling: [205, 1],
+      acnexus: [null, 1] },
     extra: [["Puzzling Places", "puzzling"]],
     testing: ["climb2", "ironman", "deadpool", "hitman3"],
   },
