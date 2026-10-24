@@ -18,7 +18,7 @@ window.VENTURE_DATA = {
     { name: "Iron Man VR", short: "Iron Man", img: "ironman",
       v: [[287, 229], [168, 133, "*§"], null, null, [97, 42, "*"]] },
     { name: "Deadpool VR", short: "Deadpool", img: "deadpool",
-      v: [[335, 229, "*"], null, null, [224, 108, "*"], null] },
+      v: [[335, 229], null, null, [224, 108, "*"], null] },
   ],
   // The grid's order: what people care about most first (popular Quest exclusives lead), series kept together in order.
   order: ["batman", "aw2", "beatsaber", "re4", "acnexus", "ironman", "deadpool", "hitman3", "vader", "vader2", "vader3",
