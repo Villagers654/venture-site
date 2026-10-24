@@ -121,6 +121,7 @@ section { padding: clamp(56px, min(9vw, calc(var(--vh) * 11)), 120px) 0; }
 .col.dnf b { font-size: clamp(8px, .75vw, 11px); color: var(--text3); }
 sup, .foot b, .totals em { color: var(--warning); font-style: normal; }
 sup { font-size: .7em; }
+sup small { font-size: .8em; }
 .gname { padding: 14px 0 0; text-align: center; font-size: clamp(13px, 1.2vw, 18px); font-weight: 600; }
 .gname span { display: block; color: var(--accent-text); font-size: .82em; }
 .group { min-width: 0; }

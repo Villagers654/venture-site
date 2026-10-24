@@ -16,7 +16,7 @@ window.VENTURE_DATA = {
     { name: "Asgard's Wrath 2", short: "Asgard's Wrath 2", img: "aw2",
       v: [[471, 386], [247, 185], null, [152, 125, "‡"], null] },
     { name: "Iron Man VR", short: "Iron Man", img: "ironman",
-      v: [[287, 229, "*§"], [168, 133, "*§"], null, null, [97, 42, "*"]] },
+      v: [[287, 229], [168, 133, "*§"], null, null, [97, 42, "*"]] },
     { name: "Deadpool VR", short: "Deadpool", img: "deadpool",
       v: [[335, 229, "*"], null, null, [224, 108, "*"], null] },
   ],

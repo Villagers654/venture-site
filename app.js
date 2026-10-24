@@ -21,7 +21,7 @@
   let D = PLAT.windows, metric = "fps";
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
-  const marks = (m) => (m ? `<sup>${esc(m)}</sup>` : "");
+  const marks = (m) => (m ? `<sup>${[...m].map((c) => (c === "*" ? esc(c) : `<small>${esc(c)}</small>`)).join("")}</sup>` : "");
 
   const hwDefault = $("hw").textContent;
   // A cell is [fps, low, marks] or null (did not run).
