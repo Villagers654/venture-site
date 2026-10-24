@@ -1,15 +1,31 @@
 // Renders the charts and game grid from data.js, and the download section from release.json
 // (written by the Pages workflow from the GitHub Releases API).
 (() => {
-  const D = window.VENTURE_DATA;
+  const ALL = window.VENTURE_DATA;
+  // Windows or Linux: the platform switch picks which head-to-head and grid numbers show.
+  const PLAT = {
+    // ran: competitor j reached gameplay; tried: it was attempted (counts toward that runtime's total).
+    // list: the grid's games; testing: not yet validated on this platform (shown muted, left out of the totals).
+    windows: { runtimes: ALL.runtimes, h2h: ALL.h2h, hw: null, fps: (g) => g[2], list: ALL.games, testing: () => false,
+      ran: (g, j) => g[3] && g[3][j], tried: (g, j) => !g[3] || g[3][j] !== null },
+    linux: { runtimes: ALL.linux.runtimes, h2h: ALL.linux.h2h, hw: ALL.linux.hw,
+      testing: (g) => ALL.linux.testing.includes(g[1]),
+      list: [...ALL.games, ...ALL.linux.extra].sort((a, b) => ALL.linux.testing.includes(a[1]) - ALL.linux.testing.includes(b[1])),
+      fps: (g) => (ALL.linux.games[g[1]] || [null])[0], ran: (g, j) => j === 0 && (ALL.linux.games[g[1]] || [])[1],
+      tried: (g, j) => j === 0 && g[1] in ALL.linux.games },
+  };
+  let D = PLAT.windows, metric = "fps";
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const marks = (m) => (m ? `<sup>${esc(m)}</sup>` : "");
 
-  const best = (g, k) => Math.max(...g.v.slice(1).filter(Boolean).map((x) => x[k]));
+  const hwDefault = $("hw").textContent;
+  // A cell is [fps, low, marks] or null (did not run).
+  const ran = (x) => Array.isArray(x);
+  const best = (g, k) => Math.max(...g.v.slice(1).filter(ran).map((x) => x[k]));
 
   // Performance chart with a metric toggle.
-  $("legend").innerHTML = D.runtimes.map((r, i) => `<span><i class="${i ? "c" + i : "v"}"></i>${esc(r)}</span>`).join("");
+  const MARKS = { "*": "fewer pixels", "†": "modified to run", "‡": "configuration changed to run", "§": "different field of view" };
   const TITLE = { fps: "Fastest in <em>every</em> game.", low: "Always <em>smooth.</em>" };
   const SUB = {
     fps: "Average fps. Higher is better.",
@@ -24,37 +40,58 @@
   }
   addEventListener("resize", fitTitle);
   document.fonts.ready.then(fitTitle);
-  function chart(metric) {
+  function chart() {
+    $("legend").innerHTML = D.runtimes.map((r, i) => `<span><i class="${i ? "c" + i : "v"}"></i>${esc(r)}</span>`).join("");
+    $("hw").textContent = $("hw-games").textContent = D.hw || hwDefault;
     const k = metric === "low" ? 1 : 0;
-    const max = Math.max(...D.h2h.flatMap((g) => g.v.filter(Boolean).map((x) => x[k])));
+    const max = Math.max(...D.h2h.flatMap((g) => g.v.filter(ran).map((x) => x[k])));
     // One order for both metrics (by average fps) so games stay put when toggling.
     const games = [...D.h2h].sort((a, b) => a.v[0][0] - b.v[0][0]);
+    // Always one row; past 30 bars (5 games of 5 runtimes) the bars, gaps and labels tighten.
+    $("chart").style.setProperty("--n", games.length);
+    $("chart").classList.toggle("dense", games.length * D.runtimes.length > 30);
     $("chart").innerHTML = games.map((g) => {
-      const ratio = g.v[0][k] / best(g, k);
-      const gmax = Math.max(...g.v.filter(Boolean).map((x) => x[k]));
+      const b = best(g, k), ratio = g.v[0][k] / b;
+      const gmax = Math.max(...g.v.filter(ran).map((x) => x[k]));
       // Each bar sits in a slot with its runtime's name (shown only by the phone layout's horizontal rows).
       const cols = g.v.map((x, i) => `<div class="slot"><span class="rn">${esc(D.runtimes[i])}</span>${x
         ? `<div class="col ${i ? "c" + i : "v"}" style="--h:${(x[k] / max) * 100}%;--g:${(x[k] / gmax) * 100}%" title="${esc(D.runtimes[i])}: ${x[k]}"><b>${x[k]}${marks(x[2])}</b></div>`
         : `<div class="col dnf" title="${esc(D.runtimes[i])}: did not run"><b>DNF</b></div>`}</div>`).join("");
-      return `<div class="group"><div class="cols">${cols}</div><div class="gname">${esc(g.short)}<span>${ratio.toFixed(1)}× faster</span></div></div>`;
+      return `<div class="group"><div class="cols">${cols}</div><div class="gname">${esc(g.short)}<span>${b > 0 ? ratio.toFixed(1) + "× faster" : "Only on Venture"}</span></div></div>`;
     }).join("");
+    // Footnotes: only the marks this platform's chart uses.
+    const used = D.h2h.flatMap((g) => g.v).filter(ran).map((x) => x[2] || "").join("");
+    $("marks").innerHTML = Object.entries(MARKS).filter(([m]) => used.includes(m)).map(([m, t]) => `<b>${m}</b> ${t}`).join(" · ");
     $("metric-sub").textContent = SUB[metric];
     $("metric-title").innerHTML = TITLE[metric];
   }
   document.querySelectorAll("[data-metric]").forEach((btn) => btn.addEventListener("click", () => {
     document.querySelectorAll("[data-metric]").forEach((b) => b.setAttribute("aria-selected", b === btn));
-    chart(btn.dataset.metric);
+    metric = btn.dataset.metric; chart();
   }));
-  chart("fps");
 
   // Compatibility totals and grid.
-  const total = [D.games.length, ...[0, 1, 2, 3].map((j) => D.games.filter((g) => g[3] && g[3][j]).length)];
-  $("totals").innerHTML = D.runtimes.map((r, i) => {
-    return `<div class="t${i ? "" : " v"}"><span>${esc(r)}</span><div class="tb"><i style="width:${(total[i] / D.games.length) * 100}%"></i></div><b>${total[i]} / ${D.games.length}</b></div>`;
-  }).join("");
-  $("grid").innerHTML = D.games.map(([name, img, fps]) =>
-    `<figure class="tile"><img src="assets/games/${img}.jpg" alt="" loading="lazy" width="640" height="360">
-      <figcaption><span>${esc(name)}</span><b>${fps}<small>fps</small></b></figcaption></figure>`).join("");
+  function games() {
+    const G = D.list.filter((g) => !D.testing(g)), comp = D.runtimes.slice(1).map((r, j) => j);
+    const total = [G.length, ...comp.map((j) => G.filter((g) => D.ran(g, j)).length)];
+    const tried = [G.length, ...comp.map((j) => G.filter((g) => D.tried(g, j)).length)];
+    $("totals").innerHTML = D.runtimes.map((r, i) => {
+      return `<div class="t${i ? "" : " v"}"><span>${esc(r)}</span><div class="tb"><i style="width:${(total[i] / tried[i]) * 100}%"></i></div><b>${total[i]} / ${tried[i]}</b></div>`;
+    }).join("");
+    // Games no competitor ran (at least one attempted it).
+    const only = G.filter((g) => comp.some((j) => D.tried(g, j)) && !comp.some((j) => D.ran(g, j))).length;
+    $("only").hidden = !only; $("only-n").textContent = only;
+    $("grid").innerHTML = D.list.map((g) => {
+      const fps = D.fps(g), test = D.testing(g);
+      return `<figure class="tile${test ? " testing" : ""}"><img src="assets/games/${g[1]}.jpg" alt="" loading="lazy" width="640" height="360">
+      <figcaption><span>${esc(g[0])}</span><b>${test ? "Testing" : fps == null ? "Runs" : fps + "<small>fps</small>"}</b></figcaption></figure>`;
+    }).join("");
+  }
+  document.querySelectorAll("[data-platform]").forEach((btn) => btn.addEventListener("click", () => {
+    document.querySelectorAll("[data-platform]").forEach((b) => b.setAttribute("aria-selected", b.dataset.platform === btn.dataset.platform));
+    D = PLAT[btn.dataset.platform]; chart(); games();
+  }));
+  chart(); games();
 
   // Repository links: from release.json, else the Venture repo named on <html data-repo>.
   const repoUrl = (rel) => "https://github.com/" + ((rel && rel.repo) || document.documentElement.dataset.repo);

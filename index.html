@@ -59,13 +59,19 @@
       <p class="sub" id="metric-sub">Average fps. Higher is better.</p>
       <div class="chart-bar">
         <div class="legend" id="legend"></div>
-        <div class="tabs" role="tablist" aria-label="Metric">
-          <button role="tab" aria-selected="true" data-metric="fps">Average fps</button>
-          <button role="tab" aria-selected="false" data-metric="low">1% lows</button>
+        <div class="tab-row">
+          <div class="tabs" role="tablist" aria-label="Platform">
+            <button role="tab" aria-selected="true" data-platform="windows">Windows</button>
+            <button role="tab" aria-selected="false" data-platform="linux">Linux</button>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Metric">
+            <button role="tab" aria-selected="true" data-metric="fps">Average fps</button>
+            <button role="tab" aria-selected="false" data-metric="low">1% lows</button>
+          </div>
         </div>
       </div>
       <div class="chart" id="chart"></div>
-      <div class="foot"><span>Core Ultra 9 285K · RTX 5090 · 2800×2856 per eye</span><span><b>*</b> fewer pixels · <b>†</b> modified to run · <b>‡</b> configuration changed to run</span></div>
+      <div class="foot"><span id="hw">Core Ultra 9 285K · RTX 5090 · 2800×2856 per eye</span><span id="marks"><b>*</b> fewer pixels · <b>†</b> modified to run · <b>‡</b> configuration changed to run · <b>§</b> different field of view</span></div>
     </div>
   </section>
 
@@ -85,12 +91,12 @@
       <div class="sec-head split">
         <div>
           <h2 class="display">Runs <em>every</em> game we tested.</h2>
-          <p class="sub"><b>14</b> games only ran on Venture.</p>
+          <p class="sub" id="only"><b id="only-n">16</b> games only ran on Venture.</p>
         </div>
         <div class="totals" id="totals"></div>
       </div>
       <div class="grid" id="grid"></div>
-      <div class="foot"><span>Core Ultra 9 285K · RTX 5090 · 2800×2856 per eye</span></div>
+      <div class="foot"><span id="hw-games">Core Ultra 9 285K · RTX 5090 · 2800×2856 per eye</span></div>
     </div>
   </section>
 
