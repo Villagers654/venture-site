@@ -82,8 +82,8 @@
     const only = G.filter((g) => comp.some((j) => D.tried(g, j)) && !comp.some((j) => D.ran(g, j))).length;
     $("only").hidden = !only; $("only-n").textContent = only;
     $("grid").innerHTML = D.list.map((g) => {
-      const fps = D.fps(g), test = D.testing(g);
-      return `<figure class="tile${test ? " testing" : ""}"><img src="assets/games/${g[1]}.jpg" alt="" loading="lazy" width="640" height="360">
+      const fps = D.fps(g), test = D.testing(g), img = g[1];
+      return `<figure class="tile${test ? " testing" : ""}"><img src="assets/games/${img}.jpg" alt="" loading="lazy" width="640" height="360">
       <figcaption><span>${esc(g[0])}</span><b>${test ? "Testing" : fps == null ? "Runs" : fps + "<small>fps</small>"}</b></figcaption></figure>`;
     }).join("");
   }
