@@ -37,7 +37,8 @@ window.VENTURE_DATA = {
     ["The Climb 2", "climb2", 727, [0, 0, 0, 0]], ["Iron Man VR", "ironman", 287, [1, 0, 0, 1]],
     ["Deadpool VR", "deadpool", 335, [0, 0, 1, 0]], ["HITMAN 3 VR: Reloaded", "hitman3", 180, [0, 0, 0, 0]],
   ],
-  // Linux (preliminary): the 2026-10-23 Linux head-to-head, Venture vs Refract 1.0.2 in Waydroid, mean of 2 runs each.
+  // Linux: the 2026-10-23/24 Linux head-to-head, Venture vs Refract 1.0.2 in Waydroid, mean of 2 runs each, plus the
+  // 2026-10-24 Venture-only numbers pass (same method, one run each) for the titles Refract did not reach.
   // 1% low here is 1000 / p99 frame time. Every game above runs on Venture Linux except those in "testing" (not yet
   // validated there, left out of the totals). "extra": Linux-only games for now. "games": Venture fps where measured
   // (null or unlisted: "Runs"), then whether Refract reached gameplay. Refract was attempted on every Linux title.
@@ -51,9 +52,12 @@ window.VENTURE_DATA = {
       { name: "Job Simulator", short: "Job Simulator", img: "jobsim", v: [[180, 175], [29, 27]] },
       { name: "Bait!", short: "Bait!", img: "bait", v: [[70, 68], [26, 22, "*"]] },
       { name: "Puzzling Places", short: "Puzzling Places", img: "puzzling", v: [[205, 180], [40, 17]] },
+      { name: "Assassin's Creed Nexus", short: "AC Nexus", img: "acnexus", v: [[199, 145], [71, 29]] },
     ],
     games: { northstar: [143, 1], aw2: [211, 1], cooking: [302, 1], jobsim: [180, 1], bait: [70, 1], puzzling: [205, 1],
-      acnexus: [null, 1] },
+      acnexus: [199, 1], batman: [184, 0], re4: [315, 0], beatsaber: [173, 0], vader: [518, 0], vader2: [332, 0],
+      vader3: [260, 0], twd: [410, 0], moss: [131, 0], moss2: [215, 0], firstcontact: [285, 0], elixir: [181, 0],
+      epic: [247, 0], cactus: [144, 0], vspeedway: [91, 0] },
     extra: [["Puzzling Places", "puzzling"]],
     testing: ["climb2", "ironman", "deadpool", "hitman3"],
   },
