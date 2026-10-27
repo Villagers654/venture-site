@@ -106,14 +106,19 @@
   const os = /linux/i.test(ua) && !/android/i.test(navigator.userAgent || "") ? "Linux" : "Windows";
   document.querySelector("[data-dl-label]").textContent = "Download for " + os;
 
-  // Download buttons point at the newest release's archive for that OS, else the releases page.
+  // Windows buttons point at the newest release's installer (else its zip); Linux has several package
+  // formats, so its button opens the release page to choose one. No release: the releases page.
   function render(rel) {
     const repo = repoUrl(rel);
     document.querySelectorAll("[data-repo]").forEach((a) => (a.href = repo));
     document.querySelectorAll("[data-releases], [data-dl]").forEach((a) => (a.href = repo + "/releases"));
     document.querySelectorAll("[data-issues]").forEach((a) => (a.href = repo + "/issues"));
-    const assets = ((rel && rel.assets) || []).filter((a) => /\.(zip|tar\.gz|tar\.xz|AppImage)$/i.test(a.name));
-    const pick = assets.find((a) => platform(a.name) === os);
+    if (os === "Linux") {
+      if (rel && rel.html_url) document.querySelectorAll("[data-dl]").forEach((a) => (a.href = rel.html_url));
+      return;
+    }
+    const assets = ((rel && rel.assets) || []).filter((a) => platform(a.name) === os);
+    const pick = assets.find((a) => /setup\.exe$/i.test(a.name)) || assets.find((a) => /\.zip$/i.test(a.name));
     if (!pick) return;
     document.querySelectorAll("[data-dl]").forEach((a) => (a.href = pick.url));
   }
