@@ -147,6 +147,22 @@ sup small { font-size: .8em; }
 .tile b { color: var(--accent-text); font-size: 16px; }
 .tile small { margin-left: 5px; font-size: 12px; color: var(--text3); font-weight: 600; }
 
+/* Linux results note: shown the first time a visit switches to Linux. */
+.modal { margin: auto; width: min(440px, calc(100% - 32px)); padding: 28px; border: 1px solid var(--stroke-hi); border-radius: var(--radius); background: var(--surface); color: var(--text); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.modal::backdrop { background: rgba(10,11,13,.66); backdrop-filter: blur(4px); }
+.modal[open] { animation: modal-in .22s cubic-bezier(.2,.8,.2,1); }
+@keyframes modal-in { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+.modal h3 { font-size: 20px; line-height: 1.25; }
+.modal p { margin-top: 8px; color: var(--text2); font-size: 15px; line-height: 1.5; }
+.rigs { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--stroke); border-radius: 14px; background: var(--bg-2); }
+.rigs div { padding: 14px 16px; font-size: 13px; line-height: 1.5; color: var(--text2); min-width: 0; }
+.rigs div + div { border-left: 1px solid var(--stroke); }
+.rigs small { display: block; color: var(--text3); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.rigs b { display: block; margin: 2px 0 4px; color: var(--text); font-size: 16px; font-weight: 600; }
+.rigs span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.modal form { margin-top: 20px; display: flex; justify-content: flex-end; }
+@media (max-width: 520px) { .modal { padding: 22px 18px 18px; } .rigs div { padding: 12px; } }
+
 /* Why sections: compact, directly under the chart they explain. */
 .why { padding-top: clamp(48px, min(6vw, calc(var(--vh) * 8)), 88px); }
 .why h2.display { font-size: clamp(28px, min(3.6vw, calc(var(--vh) * 5.6)), 48px); }

@@ -109,7 +109,15 @@
   document.querySelectorAll("[data-platform]").forEach((btn) => btn.addEventListener("click", () => {
     document.querySelectorAll("[data-platform]").forEach((b) => b.setAttribute("aria-selected", b.dataset.platform === btn.dataset.platform));
     D = PLAT[btn.dataset.platform]; chart(); games();
+    // The Linux machine is much slower: say so the first time a visit switches to Linux.
+    const note = $("linux-note");
+    if (D === PLAT.linux && !note.dataset.seen && note.showModal) { note.dataset.seen = "1"; note.showModal(); }
   }));
+  // A click outside the box (on the backdrop) closes it too.
+  $("linux-note").addEventListener("click", (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) e.currentTarget.close();
+  });
   chart(); games();
 
   // Repository links: from release.json, else the Venture repo named on <html data-repo>.
