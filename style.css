@@ -136,7 +136,8 @@ sup small { font-size: .8em; }
 .t b { text-align: right; font-weight: 700; }
 .t.v { color: var(--text); font-weight: 600; } .t.v b { color: var(--accent-text); }
 .t.v .tb i { background: linear-gradient(90deg, var(--accent), var(--accent-hi)); box-shadow: 0 0 12px rgba(0,100,224,.6); }
-.grid { margin-top: 44px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 26px 22px; }
+/* Columns: app.js picks the most that fit (--tile-min wide) and divide the game count, so every row is full. */
+.grid { --tile-min: 200px; margin-top: 44px; display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 26px 22px; }
 .tile img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; box-shadow: 0 14px 34px rgba(0,0,0,.45); outline: 1px solid var(--stroke); outline-offset: -1px; transition: transform .2s; }
 .tile:hover img { transform: translateY(-3px); }
 .tile.testing img { filter: grayscale(1); opacity: .45; }
@@ -208,7 +209,7 @@ sup small { font-size: .8em; }
   .sub { font-size: 27px; max-width: 1000px; }
   .cols { height: clamp(380px, calc(var(--vh) * 100 - 620px), 560px); }
   .totals { width: 760px; } .t { grid-template-columns: 230px 1fr 84px; }
-  .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .grid { --tile-min: 280px; }
   .tile b { font-size: 21px; } .steps p { font-size: 20px; }
   .btn.sm { height: 46px; font-size: 18px; padding: 0 22px; } :root { --nav-h: 84px; } .brand { font-size: 27px; } .links { font-size: 18px; }
 }
@@ -219,7 +220,7 @@ sup small { font-size: .8em; }
   .steps, .steps.four { grid-template-columns: 1fr; }
   .steps li, .steps li + li { padding: 22px 0 6px; border-left: 0; }
   .steps li + li { border-top: 1px solid var(--stroke); }
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+  .grid { --tile-min: 150px; gap: 20px 14px; }
   .t { grid-template-columns: 130px 1fr 54px; gap: 10px; }
   .footer { grid-template-columns: 1fr; }
   .btn.lg { width: 100%; }

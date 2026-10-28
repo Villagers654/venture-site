@@ -90,7 +90,22 @@
       return `<figure class="tile${test ? " testing" : ""}"><img src="assets/games/${img}.jpg" alt="" loading="lazy" width="640" height="360">
       <figcaption><span>${esc(g[0])}</span><b>${test ? "Testing" : fps == null ? "Runs" : fps + "<small>fps</small>"}</b></figcaption></figure>`;
     }).join("");
+    fitGrid();
   }
+  // Every grid row holds the same number of games: of the column counts that divide the count, the one
+  // whose tiles come closest to 1.4x --tile-min, never narrower than 0.6x.
+  function fitGrid() {
+    const grid = $("grid"), css = getComputedStyle(grid), n = grid.children.length;
+    const min = parseFloat(css.getPropertyValue("--tile-min")), gap = parseFloat(css.columnGap) || 0;
+    let cols = 1, best = Infinity;
+    for (let d = 1; d <= n; d++) {
+      const w = (grid.clientWidth - gap * (d - 1)) / d, off = Math.abs(Math.log(w / (1.4 * min)));
+      if (n % d || w < 0.6 * min) continue;
+      if (off < best) { best = off; cols = d; }
+    }
+    grid.style.setProperty("--cols", cols);
+  }
+  addEventListener("resize", fitGrid);
   document.querySelectorAll("[data-platform]").forEach((btn) => btn.addEventListener("click", () => {
     document.querySelectorAll("[data-platform]").forEach((b) => b.setAttribute("aria-selected", b.dataset.platform === btn.dataset.platform));
     D = PLAT[btn.dataset.platform]; chart(); games();
