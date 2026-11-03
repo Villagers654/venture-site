@@ -2,12 +2,9 @@
   {
     "slug": "0-2-0",
     "title": "Venture 0.2.0: less stutter, your controls, your room",
-    "headline": "Venture 0.2.0: <em>less stutter</em>, your controls, your room.",
     "date": null,
     "kind": "Release",
-    "summary": "Far less stutter, a Controls page for every controller, per-game resolution and frame rate, and mixed reality on many more setups.",
-    "image": "media/og.jpg",
-    "card": "media/controls-clip-poster.webp",
-    "card_size": [1092, 598]
+    "summary": "Far less stutter, a Controls page for every controller, per-game resolution and frame rate, and mixed reality on more setups.",
+    "image": "media/og.jpg"
   }
 ]

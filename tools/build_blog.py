@@ -1,19 +1,17 @@
 #!/usr/bin/env python3
-"""Builds the blog from blog/posts.json: the post list on blog/index.html, each post's date line, and the
+"""Builds the blog from blog/posts.json: the post list on the Blog page (blog/index.html), each post's date line, and the
 RSS 2.0 feed at blog/feed.xml. No dependencies; run from anywhere after adding or changing a post:
 
     python tools/build_blog.py
 
 A post is blog/<slug>/index.html plus one entry in blog/posts.json, newest first:
     slug       folder name under blog/, also the URL (https://venture-emu.org/blog/<slug>/)
-    title      plain-text title (page lists, feed)
-    headline   the card heading on the News page; may use <em> for the accent
-    date       publication date, "YYYY-MM-DD", or null while unpublished (shown as a marked "Release date"
-               placeholder and left out of the feed's pubDate)
-    kind       eyebrow label, e.g. "Release"
-    summary    one or two sentences (card text, feed description)
+    title      plain-text title (Blog page, feed)
+    date       publication date, "YYYY-MM-DD", or null while unpublished (shown as "Date TBA" and left out
+               of the feed's pubDate)
+    kind       small label beside the date, e.g. "Release"
+    summary    one line (Blog page, feed description)
     image      share image, relative to the post folder (feed enclosure; 1200x630 JPEG like og:image)
-    card       News page card image, relative to the post folder; card_size its [width, height]
 """
 import email.utils, html, json, os, re, sys
 from datetime import datetime, timezone
@@ -41,20 +39,18 @@ def date_of(post):
 def time_tag(post):
     d = date_of(post)
     if not d:
-        return '<time data-post-date class="tbd" datetime="">Release date</time>'
+        return '<time data-post-date class="tbd" datetime="">Date TBA</time>'
     return f'<time data-post-date datetime="{d:%Y-%m-%d}">{d:%B} {d.day}, {d.year}</time>'
 
 
-def card(post):
-    s, w_h = post["slug"], post.get("card_size") or [1200, 630]
-    return f'''    <li class="post-card">
+def entry(post):
+    s = post["slug"]
+    return f'''    <li class="entry">
       <a href="{s}/">
-        <img src="{s}/{html.escape(post["card"])}" width="{w_h[0]}" height="{w_h[1]}" alt="" loading="lazy">
+        <p class="entry-meta">{time_tag(post)}<span>{html.escape(post.get("kind", "Post"))}</span></p>
         <div>
-          <p class="eyebrow"><span>{html.escape(post.get("kind", "News"))}</span><i aria-hidden="true"></i>{time_tag(post)}</p>
-          <h2 class="display">{post["headline"]}</h2>
+          <h2 class="display">{html.escape(post["title"])}</h2>
           <p>{html.escape(post["summary"])}</p>
-          <span class="more">Read the post →</span>
         </div>
       </a>
     </li>'''
@@ -81,15 +77,15 @@ def feed(posts):
     return f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Venture News</title>
+    <title>Venture Blog</title>
     <link>{SITE}/blog/</link>
-    <description>Release news from Venture, the Meta Quest emulator for PC VR.</description>
+    <description>The Venture blog: releases and news from the Meta Quest emulator for PC VR.</description>
     <language>en</language>
     <lastBuildDate>{email.utils.format_datetime(last)}</lastBuildDate>
     <atom:link href="{SITE}/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>{SITE}/assets/og.jpg</url>
-      <title>Venture News</title>
+      <title>Venture Blog</title>
       <link>{SITE}/blog/</link>
     </image>
 {chr(10).join(items)}
@@ -114,7 +110,7 @@ def main():
     if a not in src or b not in src:
         sys.exit("blog/index.html lacks the posts markers")
     head, rest = src.split(a, 1)
-    write(index, head + a + "\n" + "\n".join(card(p) for p in posts) + "\n    " + b + rest.split(b, 1)[1])
+    write(index, head + a + "\n" + "\n".join(entry(p) for p in posts) + "\n    " + b + rest.split(b, 1)[1])
     write(os.path.join(BLOG, "feed.xml"), feed(posts))
     print(f"{len(posts)} post(s): blog/index.html, blog/feed.xml")
 

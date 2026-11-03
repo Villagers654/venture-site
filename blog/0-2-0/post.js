@@ -6,18 +6,17 @@
   const num = (x) => typeof x === "number" && isFinite(x);
   const fmt = (x, unit) => (unit === "s" ? (x < 10 ? x.toFixed(1) : Math.round(x)) + " s" : String(Math.round(x)));
 
-  // Each chart: its data per platform, the metric keys its tabs pick, and how a 0.2.0 gain reads.
+  // Each chart: its data, the metric key its tabs pick, and how a 0.2.0 gain reads.
   const CHARTS = {
     stutter: { data: D.stutter, metric: "first", unit: "s", lower: true,
       gain: (n, o) => (o <= 0 ? "" : n <= o ? Math.round((1 - n / o) * 100) + "% less" : Math.round((n / o - 1) * 100) + "% more") },
     fps: { data: D.fps, metric: "fps", unit: "fps", lower: false,
       gain: (n, o) => (o <= 0 ? "" : n >= o ? (n / o).toFixed(1) + "× faster" : Math.round((1 - n / o) * 100) + "% slower") },
   };
-  let platform = "windows";
 
   function draw(id) {
     const C = CHARTS[id], el = document.getElementById("chart-" + id), k = C.metric;
-    const games = [...C.data[platform]];
+    const games = [...C.data];
     const pending = !games.length || games.some((g) => !g[k].every(num));
     if (!pending) games.sort((a, b) => (C.lower ? b[k][1] - a[k][1] : a[k][1] - b[k][1]));
     const max = pending ? 1 : Math.max(...games.flatMap((g) => g[k]));
@@ -39,20 +38,15 @@
   }
   function drawAll() {
     Object.keys(CHARTS).forEach(draw);
-    document.querySelectorAll("[data-hw]").forEach((e) => (e.textContent = D.hw[platform]));
+    document.querySelectorAll("[data-hw]").forEach((e) => (e.textContent = D.hw));
   }
 
-  // Tabs: platform tabs switch both charts (they stay in step); metric tabs switch their own chart.
+  // Tabs: each tab list switches its own chart's metric.
   document.querySelectorAll(".post-sec [role=tab]").forEach((btn) => btn.addEventListener("click", () => {
     const group = btn.closest("[role=tablist]");
-    if (btn.dataset.platform) {
-      platform = btn.dataset.platform;
-      document.querySelectorAll("[data-platform]").forEach((b) => b.setAttribute("aria-selected", b.dataset.platform === platform));
-    } else {
-      group.querySelectorAll("[role=tab]").forEach((b) => b.setAttribute("aria-selected", b === btn));
-      CHARTS[group.dataset.chart].metric = btn.dataset.metric;
-    }
-    drawAll();
+    group.querySelectorAll("[role=tab]").forEach((b) => b.setAttribute("aria-selected", b === btn));
+    CHARTS[group.dataset.chart].metric = btn.dataset.metric;
+    draw(group.dataset.chart);
   }));
   // Arrow keys move between tabs within a tab list.
   document.querySelectorAll(".post-sec [role=tablist]").forEach((list) => list.addEventListener("keydown", (e) => {

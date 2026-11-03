@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Venture News</title>
+    <title>Venture Blog</title>
     <link>https://venture-emu.org/blog/</link>
-    <description>Release news from Venture, the Meta Quest emulator for PC VR.</description>
+    <description>The Venture blog: releases and news from the Meta Quest emulator for PC VR.</description>
     <language>en</language>
     <lastBuildDate>Sun, 01 Nov 2026 12:00:00 +0000</lastBuildDate>
     <atom:link href="https://venture-emu.org/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://venture-emu.org/assets/og.jpg</url>
-      <title>Venture News</title>
+      <title>Venture Blog</title>
       <link>https://venture-emu.org/blog/</link>
     </image>
     <item>
       <title>Venture 0.2.0: less stutter, your controls, your room</title>
       <link>https://venture-emu.org/blog/0-2-0/</link>
       <guid isPermaLink="true">https://venture-emu.org/blog/0-2-0/</guid>
-      <description>Far less stutter, a Controls page for every controller, per-game resolution and frame rate, and mixed reality on many more setups.</description>
-      <enclosure url="https://venture-emu.org/blog/0-2-0/media/og.jpg" length="51049" type="image/jpeg"/>
+      <description>Far less stutter, a Controls page for every controller, per-game resolution and frame rate, and mixed reality on more setups.</description>
+      <enclosure url="https://venture-emu.org/blog/0-2-0/media/og.jpg" length="38026" type="image/jpeg"/>
     </item>
   </channel>
 </rss>
