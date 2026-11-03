@@ -240,6 +240,8 @@ sup small { font-size: .8em; }
   .grid { --tile-min: 150px; gap: 20px 14px; }
   .t { grid-template-columns: 130px 1fr 54px; gap: 10px; }
   .footer { grid-template-columns: 1fr; }
+  .footer nav { flex-wrap: wrap; gap: 10px 22px; }
+  .footer nav a { white-space: nowrap; }
   .btn.lg { width: 100%; }
   .cta-row .btn.ghost { display: none; }
   .hero-art { margin-top: 36px; }

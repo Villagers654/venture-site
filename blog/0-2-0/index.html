@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Venture 0.2.0: less stutter, your controls, your room</title>
+  <meta name="description" content="Venture 0.2.0 saves and pre-translates game code and pre-compiles shaders for far less stutter, adds a Controls page for every controller, per-game resolution and frame rate, and mixed reality on many more setups.">
+  <link rel="canonical" href="https://venture-emu.org/blog/0-2-0/">
+  <meta name="theme-color" content="#1a1b1e">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Venture">
+  <meta property="og:url" content="https://venture-emu.org/blog/0-2-0/">
+  <meta property="og:title" content="Venture 0.2.0: less stutter, your controls, your room">
+  <meta property="og:description" content="Far less stutter, a Controls page for every controller, per-game resolution and frame rate, and mixed reality on many more setups.">
+  <meta property="og:image" content="https://venture-emu.org/blog/0-2-0/media/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Venture 0.2.0: less stutter, your controls, your room. The launcher's new Controls page.">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Venture 0.2.0: less stutter, your controls, your room",
+    "url": "https://venture-emu.org/blog/0-2-0/",
+    "image": "https://venture-emu.org/blog/0-2-0/media/og.jpg",
+    "publisher": { "@type": "Organization", "name": "Venture", "url": "https://venture-emu.org/" }
+  }
+  </script>
+  <link rel="icon" href="../../assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../../blog.css">
+  <link rel="alternate" type="application/rss+xml" title="Venture News" href="../feed.xml">
+  <script src="data.js" defer></script>
+  <script src="post.js" defer></script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="../../" aria-label="Venture home"><img src="../../assets/logo.svg" alt="" width="36" height="36"><span>Venture</span></a>
+    <nav class="links" aria-label="Sections">
+      <a href="../../#performance">Performance</a>
+      <a href="../../#games">Games</a>
+      <a href="../../blog/" aria-current="true">News</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn ghost sm icon" href="https://discord.gg/Ey9hHszvwa" aria-label="Discord" title="Discord"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></a>
+      <a class="btn ghost sm" href="https://github.com/Villagers654/Venture"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
+      <a class="btn primary sm" href="https://github.com/Villagers654/Venture/releases/latest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <header class="wrap post-hero">
+    <p class="eyebrow"><a href="../">News</a><i aria-hidden="true"></i><span>Release</span><i aria-hidden="true"></i><time data-post-date class="tbd" datetime="">Release date</time></p>
+    <h1 class="display">Venture 0.2.0.<br><em>Less stutter.</em> Your&nbsp;controls. Your&nbsp;room.</h1>
+    <p class="lede">Our biggest update since launch. Games stutter far less, every controller gets a proper bindings page, you can set resolution and frame rate per game, and mixed reality games show your real room on many more setups.</p>
+    <p class="note">Every comparison on this page is against 0.1.0, our first release.</p>
+
+    <ol class="steps four toc" aria-label="In this release">
+      <li><a href="#stutter"><small>01</small><h3>Less stutter.</h3><p>Translated code is saved, and code and shaders are prepared ahead.</p></a></li>
+      <li><a href="#controls"><small>02</small><h3>Your controls.</h3><p>A bindings page for every controller, and for every game.</p></a></li>
+      <li><a href="#display"><small>03</small><h3>Your resolution.</h3><p>Resolution and frame rate, globally or per game.</p></a></li>
+      <li><a href="#mixed-reality"><small>04</small><h3>Your room.</h3><p>Mixed reality on any setup that can show it.</p></a></li>
+    </ol>
+  </header>
+
+  <section id="stutter" class="band post-sec" aria-labelledby="stutter-title">
+    <div class="wrap">
+      <h2 class="display" id="stutter-title">Less <em>stutter</em>.</h2>
+      <p class="sub">A Quest game's code is built for ARM processors and its shaders for a phone GPU. Venture translates both as you play. Every time a game reached something new, that work showed up as a hitch, and it happened again on every launch. 0.2.0 keeps that work, and gets ahead of it.</p>
+      <ol class="steps three">
+        <li><h3>Translated code is saved.</h3><p>It's compressed and stored on disk, so the next launch loads it instead of translating again. When a game updates, only what changed is redone.</p></li>
+        <li><h3>Code is translated ahead.</h3><p>Spare CPU threads translate the code a game is likely to reach soon, at low priority, out of the game's way.</p></li>
+        <li><h3>Shaders are compiled ahead.</h3><p>Venture records the pipelines each game builds and compiles them in the background on the next launch, before the game asks.</p></li>
+      </ol>
+
+      <div class="chart-block">
+        <h3>Time lost to hitches</h3>
+        <p class="sub">Seconds lost to hitches over the same route. Lower is better.</p>
+        <div class="chart-bar">
+          <div class="legend"><span><i class="v"></i>0.2.0</span><span><i class="old"></i>0.1.0</span></div>
+          <div class="tab-row">
+            <div class="tabs" role="tablist" aria-label="Platform">
+              <button role="tab" aria-selected="true" data-platform="windows">Windows</button>
+              <button role="tab" aria-selected="false" data-platform="linux">Linux</button>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Launch" data-chart="stutter">
+              <button role="tab" aria-selected="true" data-metric="first">First launch</button>
+              <button role="tab" aria-selected="false" data-metric="next">Next launch</button>
+            </div>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart" id="chart-stutter"></div>
+          <div class="pending-note" id="note-stutter"><p>Numbers coming soon<small>Measured in the 0.2.0 vs 0.1.0 comparison run</small></p></div>
+        </div>
+        <div class="foot"><span data-hw></span><span>First launch: nothing saved yet. Next launch: the one after.</span></div>
+      </div>
+
+      <div class="chart-block">
+        <h3>Frame rates</h3>
+        <p class="sub">Steady-state gameplay, 0.2.0 against 0.1.0. Higher is better.</p>
+        <div class="chart-bar">
+          <div class="legend"><span><i class="v"></i>0.2.0</span><span><i class="old"></i>0.1.0</span></div>
+          <div class="tab-row">
+            <div class="tabs" role="tablist" aria-label="Platform">
+              <button role="tab" aria-selected="true" data-platform="windows">Windows</button>
+              <button role="tab" aria-selected="false" data-platform="linux">Linux</button>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Metric" data-chart="fps">
+              <button role="tab" aria-selected="true" data-metric="fps">Average fps</button>
+              <button role="tab" aria-selected="false" data-metric="low">1% lows</button>
+            </div>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart" id="chart-fps"></div>
+          <div class="pending-note" id="note-fps"><p>Numbers coming soon<small>Measured in the 0.2.0 vs 0.1.0 comparison run</small></p></div>
+        </div>
+        <div class="foot"><span data-hw></span><span>1% lows: the slowest 1% of frames.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="controls" class="post-sec" aria-labelledby="controls-title">
+    <div class="wrap">
+      <h2 class="display" id="controls-title">Controls, <em>done properly</em>.</h2>
+      <p class="sub">The new Controls page shows your actual controller, drawn from the 3D model already on your PC, with a line from every button to what it does in Quest games.</p>
+      <figure class="shot clip">
+        <video autoplay muted loop playsinline preload="metadata" width="1092" height="598" poster="media/controls-clip-poster.webp" aria-label="The Controls page for Valve Index controllers: the menu button set to a held button, then to two buttons pressed together, then a search for another controller">
+          <source src="media/controls-clip.webm" type="video/webm">
+          <source src="media/controls-clip.mp4" type="video/mp4">
+        </video>
+        <button type="button">Pause</button>
+        <figcaption>Menu on a held button, then on two buttons together, then searching for another controller.</figcaption>
+      </figure>
+      <ul class="feats">
+        <li><h3>Starts on your controller.</h3><p>It opens on the controller you have connected. Search for any other.</p></li>
+        <li><h3>Any button, anywhere.</h3><p>Every Quest button can go on a single button, a held button, or two buttons pressed together.</p></li>
+        <li><h3>A menu button that just works.</h3><p><b>Automatic</b> picks a free button your runtime doesn't reserve, and shows you which one.</p></li>
+        <li><h3>Tuned for every common controller.</h3><p>Index, Vive, Touch, PSVR2 Sense, Steam Frame, Windows Mixed Reality, Pico 4, Focus 3 and more. Nothing shared by default, nothing on a button SteamVR keeps for itself.</p></li>
+      </ul>
+      <div class="media-row">
+        <ul class="feats one"><li><h3>Bindings per game.</h3><p>Any game can have its own controls. Turn on custom controls on its page, and Venture tells you when two actions share a button.</p></li></ul>
+        <figure class="shot">
+          <img src="media/game-controls.webp" srcset="media/game-controls-640.webp 640w, media/game-controls.webp 1086w" sizes="(max-width: 1100px) 100vw, 56vw" width="1086" height="690" loading="lazy" alt="Batman: Arkham Shadow's Controls tab with custom controls on: menu on both stick clicks, X and Y on the same button, and a note that the game sees stick click presses too">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="display" class="band post-sec" aria-labelledby="display-title">
+    <div class="wrap">
+      <h2 class="display" id="display-title">Resolution and frame rate, <em>your way</em>.</h2>
+      <p class="sub">Games run at the size and refresh rate your VR runtime picks, unless you say otherwise. Now you can, globally or per game.</p>
+      <div class="shots">
+        <figure class="shot cut">
+          <img src="media/display-resolution.webp" srcset="media/display-resolution-640.webp 640w, media/display-resolution.webp 922w" sizes="(max-width: 760px) 100vw, 46vw" width="922" height="440" loading="lazy" alt="Settings, Display: the resolution menu open with Runtime default, Quest 3, Quest Pro, Quest 2, Quest 1, Oculus Go, Percent of runtime and Custom size">
+          <figcaption><b>Resolution:</b> your runtime's size, a percentage of it (like SteamVR's slider), a custom size, or what a Quest 3, Quest Pro, Quest 2, Quest 1 or Oculus Go renders.</figcaption>
+        </figure>
+        <figure class="shot cut">
+          <img src="media/display-rates.webp" srcset="media/display-rates-640.webp 640w, media/display-rates.webp 922w" sizes="(max-width: 760px) 100vw, 46vw" width="922" height="620" loading="lazy" alt="Settings, Display: the frame rate menu open with Runtime default and 60 to 240 Hz, plus Custom">
+          <figcaption><b>Frame rate:</b> anything from 60 to 240 Hz, or a custom number.</figcaption>
+        </figure>
+      </div>
+      <figure class="shot narrow">
+        <img src="media/game-display.webp" srcset="media/game-display-640.webp 640w, media/game-display.webp 892w" sizes="(max-width: 940px) 100vw, 892px" width="892" height="260" loading="lazy" alt="Resident Evil 4's Settings tab: resolution per eye set to Quest 3 and frame rate to 144 Hz">
+        <figcaption>Per game: Resident Evil 4 at Quest 3 resolution and 144 Hz.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="mixed-reality" class="post-sec" aria-labelledby="mr-title">
+    <div class="wrap">
+      <h2 class="display" id="mr-title">Mixed reality on <em>more setups</em>.</h2>
+      <p class="sub">Mixed reality games now show your room on any setup that can provide it. Venture doesn't look for specific headsets or apps: it asks your runtime what it can do and uses the best option.</p>
+      <ul class="rows">
+        <li><h3>Quest Link and Air Link</h3><p>With Meta's passthrough over Link turned on.</p></li>
+        <li><h3>SteamVR headsets with a camera</h3><p>Such as Index and Vive Pro, directly or through Rectus's <a href="https://github.com/Rectus/openxr-steamvr-passthrough">OpenXR SteamVR Passthrough</a> layer.</p></li>
+        <li><h3>Steam Frame</h3><p>With McFredward's <a href="https://github.com/McFredward/steam-link-native-passthrough">steam-link-native-passthrough</a>. McFredward also contributed Venture's first passthrough support.</p></li>
+        <li><h3>Color-key tools</h3><p>Virtual Desktop, ALVR and <a href="https://github.com/spyjacob/steam-frame-chroma-key">steam-frame-chroma-key</a>: choose <b>Color key</b> in Settings and match the color in your tool.</p></li>
+        <li><h3>Monado and WiVRn on Linux</h3><p>When the driver for your headset supports passthrough.</p></li>
+      </ul>
+      <div class="media-row">
+        <ul class="feats one"><li><h3>On by default.</h3><p>If your setup can't show your room, games simply play in VR. Setup guides for each option are on the <a href="https://github.com/Villagers654/Venture/wiki/Mixed-Reality">Mixed Reality wiki page</a>.</p></li></ul>
+        <figure class="shot pt-row">
+          <img src="media/passthrough.webp" srcset="media/passthrough-640.webp 640w, media/passthrough.webp 860w" sizes="(max-width: 1100px) 100vw, 50vw" width="860" height="59" loading="lazy" alt="Settings: Passthrough (mixed reality), switched on">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="fixes" class="why post-sec" aria-labelledby="fixes-title">
+    <div class="wrap">
+      <h2 class="display" id="fixes-title">Fixes.</h2>
+      <ul class="rows">
+        <li><h3>Beat Saber</h3><p>No longer crashes when SteamVR's resolution is very high. GLES games also use less video memory: Beat Saber about 560 MB less at high resolution.</p></li>
+        <li><h3>Open Brush</h3><p>Open Brush, and other apps whose Java code was optimized in a way PC Java rejects, now start.</p>
+          <img class="thumb" src="media/openbrush.webp" width="1024" height="640" loading="lazy" alt="Open Brush running on Venture: the night-time sketching world with both controllers in view"></li>
+        <!-- TODO before publishing: AC Nexus on Linux, SUPERHOT VR demo, Bait!, First Contact, as they land. -->
+        <li><h3>And many more</h3><p>Lots of smaller fixes from your reports. Thank you for sending them.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="oss closing" aria-labelledby="get-title">
+    <div class="oss-in">
+      <h2 class="display" id="get-title">Get <em>0.2.0</em>.</h2>
+      <p>Venture updates itself. If you've turned update checks off, download it from the releases page. The full list of changes is in the release notes.</p>
+      <div class="oss-cta">
+        <a class="btn primary lg" href="https://github.com/Villagers654/Venture/releases/latest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download 0.2.0</span></a>
+        <a class="btn ghost lg" href="https://github.com/Villagers654/Venture/releases">Release notes</a>
+      </div>
+      <p>Found a problem? Create a debug report in Settings and open an <a href="https://github.com/Villagers654/Venture/issues">issue</a>, or come say hi on <a href="https://discord.gg/Ey9hHszvwa">Discord</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <div class="brand"><img src="../../assets/logo.svg" alt="" width="28" height="28"><span>Venture</span></div>
+  <p>GPL-3.0. Not affiliated with Meta. <a class="site-src" href="https://github.com/Villagers654/venture-site">Website source</a></p>
+  <nav><a href="../../blog/">News</a><a href="https://github.com/Villagers654/Venture">GitHub</a><a href="https://github.com/Villagers654/Venture/releases">Releases</a><a href="https://github.com/Villagers654/Venture/issues">Report an issue</a><a href="https://discord.gg/Ey9hHszvwa">Discord</a></nav>
+</footer>
+</body>
+</html>
