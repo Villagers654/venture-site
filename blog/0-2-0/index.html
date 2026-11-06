@@ -67,6 +67,45 @@
       <div><dt>less startup hitching</dt><dd><b data-stat="startup">44</b><small>%</small></dd></div>
       <div><dt>less stalling in play</dt><dd><b data-stat="play">45</b><small>%</small></dd></div>
     </dl>
+    <h2 id="controls">Customize your controls</h2>
+    <p>The new Controls page shows the controller you actually own, with a line from each Quest button to the button it uses. It opens on the controller you have connected, you can search for any other, and you can drag a controller to turn it around.</p>
+    <p>Every Quest button can go anywhere: a single button, a held button or two buttons pressed together. One set of defaults works the same on SteamVR, Meta Link, Virtual Desktop, Monado and WiVRn, or you can choose your own setup that works for you.</p>
+    <figure class="media wide clip">
+      <video autoplay muted loop playsinline preload="metadata" width="1600" height="1000" poster="media/controls-clip-poster.webp" aria-label="The Controls page: switching from Valve Index to Touch Plus, PSVR2 Sense and Steam Frame, turning a controller, changing a binding and setting the menu to two buttons">
+        <source src="media/controls-clip.webm" type="video/webm">
+        <source src="media/controls-clip.mp4" type="video/mp4">
+      </video>
+    </figure>
+
+    <h2 id="display">Resolution and frame rate</h2>
+    <p>Games still run at the resolution and refresh rate your runtime picks. If you want something else, you can now set both in Settings for every game, or for one game on its new Settings tab:</p>
+    <ul>
+      <li>Resolution can be your runtime's size, a percentage of it (it works like SteamVR's slider), a custom size, or the size a Quest 3, Quest 2, etc. renders at.</li>
+      <li>Frame rate can be anything from 60 to 240 Hz, or a custom number.</li>
+    </ul>
+    <figure class="media wide clip">
+      <video autoplay muted loop playsinline preload="metadata" width="1600" height="1000" poster="media/display-clip-poster.webp" aria-label="Batman: Arkham Shadow's Settings tab: resolution per eye set to Quest 3, then frame rate set to 120 Hz">
+        <source src="media/display-clip.webm" type="video/webm">
+        <source src="media/display-clip.mp4" type="video/mp4">
+      </video>
+      <figcaption>A game's own Settings tab. Settings › Display has the same rows for every game.</figcaption>
+    </figure>
+
+    <h2 id="mirror">See and hear the game on your PC</h2>
+    <p>Games now show what you see in a normal window on your desktop, so friends can watch or you can record. It's one cheap copy on the GPU's lowest-priority queue, so it doesn't cost the headset frames. Pick the left or right eye and a cropped or whole view, or turn it off.</p>
+    <figure class="media wide">
+      <img src="media/mirror-batman.webp" srcset="media/mirror-batman-720.webp 720w, media/mirror-batman.webp 1600w" sizes="(max-width: 1100px) 100vw, 1040px" width="1600" height="900" loading="lazy" alt="A dim apartment in Batman: Arkham Shadow, with a lit table lamp, an old television on a dresser and a hallway behind a curtain">
+      <figcaption>Batman: Arkham Shadow in Venture: the left eye, cropped to fill a 16:9 window the way the mirror does.</figcaption>
+    </figure>
+    <p>You can also enable audio from games to play over your PC speakers for recording and streaming.</p>
+
+    <h2 id="mixed-reality">Mixed reality</h2>
+    <p>Venture now supports Mixed Reality in many headsets for games that need it! This change comes courtesy of McFredward's <a href="https://github.com/Villagers654/Venture/pull/34">Venture PR</a>. It's on by default. If your setup can't show your room, games simply play in VR. The <a href="https://github.com/Villagers654/Venture/wiki/Mixed-Reality">wiki</a> has a setup guide for each.</p>
+    <figure class="media wide">
+      <img src="media/mixed-reality.webp" srcset="media/mixed-reality-720.webp 720w, media/mixed-reality-1440.webp 1440w, media/mixed-reality.webp 1920w" sizes="(max-width: 1100px) 100vw, 1040px" width="1920" height="1080" loading="lazy" alt="A Quest mixed reality game's board floating in a real room, seen through a Steam Frame's passthrough, with a desk, a racing wheel and a monitor behind it">
+      <figcaption>A Quest mixed reality game in Venture on a Steam Frame. Screenshot by McFredward.</figcaption>
+    </figure>
+
     <h2 id="stutter">Smoother</h2>
     <p>A Quest game's code is built for ARM processors, and its shaders for a phone GPU. Venture translates both for your PC as you play. In 0.1.0, each time a game reached something new, that translation could show up as a hitch, and it happened again every time.</p>
     <p>0.2.0 does a lot of work to fix that:</p>
@@ -106,45 +145,6 @@
         <div class="pending-note" id="note-vram"><p>Numbers coming soon</p></div>
       </div>
       <figcaption data-hw></figcaption>
-    </figure>
-
-    <h2 id="controls">Customize your controls</h2>
-    <p>The new Controls page shows the controller you actually own, with a line from each Quest button to the button it uses. It opens on the controller you have connected, you can search for any other, and you can drag a controller to turn it around.</p>
-    <p>Every Quest button can go anywhere: a single button, a held button or two buttons pressed together. One set of defaults works the same on SteamVR, Meta Link, Virtual Desktop, Monado and WiVRn, or you can choose your own setup that works for you.</p>
-    <figure class="media wide clip">
-      <video autoplay muted loop playsinline preload="metadata" width="1600" height="1000" poster="media/controls-clip-poster.webp" aria-label="The Controls page: switching from Valve Index to Touch Plus, PSVR2 Sense and Steam Frame, turning a controller, changing a binding and setting the menu to two buttons">
-        <source src="media/controls-clip.webm" type="video/webm">
-        <source src="media/controls-clip.mp4" type="video/mp4">
-      </video>
-    </figure>
-
-    <h2 id="display">Resolution and frame rate</h2>
-    <p>Games still run at the resolution and refresh rate your runtime picks. If you want something else, you can now set both in Settings for every game, or for one game on its new Settings tab:</p>
-    <ul>
-      <li>Resolution can be your runtime's size, a percentage of it (it works like SteamVR's slider), a custom size, or the size a Quest 3, Quest 2, etc. renders at.</li>
-      <li>Frame rate can be anything from 60 to 240 Hz, or a custom number.</li>
-    </ul>
-    <figure class="media wide clip">
-      <video autoplay muted loop playsinline preload="metadata" width="1600" height="1000" poster="media/display-clip-poster.webp" aria-label="Batman: Arkham Shadow's Settings tab: resolution per eye set to Quest 3, then frame rate set to 120 Hz">
-        <source src="media/display-clip.webm" type="video/webm">
-        <source src="media/display-clip.mp4" type="video/mp4">
-      </video>
-      <figcaption>A game's own Settings tab. Settings › Display has the same rows for every game.</figcaption>
-    </figure>
-
-    <h2 id="mirror">See and hear the game on your PC</h2>
-    <p>Games now show what you see in a normal window on your desktop, so friends can watch or you can record. It's one cheap copy on the GPU's lowest-priority queue, so it doesn't cost the headset frames. Pick the left or right eye and a cropped or whole view, or turn it off.</p>
-    <figure class="media wide">
-      <img src="media/mirror-batman.webp" srcset="media/mirror-batman-720.webp 720w, media/mirror-batman.webp 1600w" sizes="(max-width: 1100px) 100vw, 1040px" width="1600" height="900" loading="lazy" alt="A dim apartment in Batman: Arkham Shadow, with a lit table lamp, an old television on a dresser and a hallway behind a curtain">
-      <figcaption>Batman: Arkham Shadow in Venture: the left eye, cropped to fill a 16:9 window the way the mirror does.</figcaption>
-    </figure>
-    <p>You can also enable audio from games to play over your PC speakers for recording and streaming.</p>
-
-    <h2 id="mixed-reality">Mixed reality</h2>
-    <p>Venture now supports Mixed Reality in many headsets for games that need it! This change comes courtesy of McFredward's <a href="https://github.com/Villagers654/Venture/pull/34">Venture PR</a>. It's on by default. If your setup can't show your room, games simply play in VR. The <a href="https://github.com/Villagers654/Venture/wiki/Mixed-Reality">wiki</a> has a setup guide for each.</p>
-    <figure class="media wide">
-      <img src="media/mixed-reality.webp" srcset="media/mixed-reality-720.webp 720w, media/mixed-reality-1440.webp 1440w, media/mixed-reality.webp 1920w" sizes="(max-width: 1100px) 100vw, 1040px" width="1920" height="1080" loading="lazy" alt="A Quest mixed reality game's board floating in a real room, seen through a Steam Frame's passthrough, with a desk, a racing wheel and a monitor behind it">
-      <figcaption>A Quest mixed reality game in Venture on a Steam Frame. Screenshot by McFredward.</figcaption>
     </figure>
 
     <h2 id="more">Everything else</h2>
