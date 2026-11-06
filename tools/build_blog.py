@@ -140,6 +140,7 @@ def main():
     body = sep.join(listed(p, page) for p, page in zip(posts, pages))
     js = [f'  <script src="{x}" defer></script>' for p, page in zip(posts, pages) for x in scripts(p, page)]
     js.append('  <script src="media.js" defer></script>')
+    js.append('  <script src="share.js" defer></script>')
     for a, b, new in (("<!-- posts:start (tools/build_blog.py) -->", "<!-- posts:end -->", "\n" + body + "\n    "),
                       ("<!-- scripts:start (tools/build_blog.py) -->", "<!-- scripts:end -->", "\n" + "\n".join(js) + "\n  ")):
         if a not in src or b not in src:

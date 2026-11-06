@@ -115,3 +115,8 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline: 2px solid 
 .media.ui img { width: 600px; max-width: 100%; margin-inline: auto; }
 .media.ui figcaption { text-align: center; }
 .article p strong { color: var(--text); font-weight: 650; }
+
+/* Share button at the right of a post's date line (share.js). */
+.meta-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.share { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border: 1px solid var(--stroke-hi); border-radius: 999px; background: transparent; color: var(--text2, var(--text3)); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: color .15s, border-color .15s, background .15s; }
+.share:hover { color: var(--text); border-color: var(--accent-text); background: rgba(77, 155, 255, .08); }
