@@ -1,7 +1,9 @@
 // A Share button at the right of each post's date line, on post pages and the Blog page. It opens the system share
 // sheet where there is one and copies the post's link otherwise. The link is the post's own page.
 (() => {
-  const icon = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>';
+  const svg = (body) => '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
+  const icon = svg('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/>');
+  const done = svg('<path d="M20 6 9 17l-5-5"/>');
   for (const article of document.querySelectorAll(".article")) {
     const meta = article.querySelector(".meta");
     if (!meta) continue;
@@ -12,17 +14,19 @@
     const button = document.createElement("button");
     button.type = "button";
     button.className = "share";
-    button.innerHTML = icon + "<span>Share</span>";
-    const label = button.querySelector("span");
+    button.innerHTML = icon;
+    button.title = "Share";
+    button.setAttribute("aria-label", "Share");
+    const show = (html, text) => { button.innerHTML = html; button.title = text; button.setAttribute("aria-label", text); };
     let reset = 0;
     button.addEventListener("click", async () => {
       if (navigator.share) {
         try { await navigator.share({ title: name, url }); return; } catch (e) { if (e && e.name === "AbortError") return; }
       }
-      try { await navigator.clipboard.writeText(url); label.textContent = "Link copied"; }
-      catch { label.textContent = "Copy failed"; }
+      try { await navigator.clipboard.writeText(url); show(done, "Link copied"); }
+      catch { show(icon, "Copy failed"); }
       clearTimeout(reset);
-      reset = setTimeout(() => (label.textContent = "Share"), 2000);
+      reset = setTimeout(() => show(icon, "Share"), 2000);
     });
     const row = document.createElement("div");
     row.className = "meta-row";
