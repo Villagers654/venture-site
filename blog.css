@@ -22,10 +22,6 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline: 2px solid 
 /* Launcher media: the app's own surface and hairline. Wide media leaves the column on large screens. */
 .media img, .media video { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--bg); outline: 1px solid var(--stroke-hi); outline-offset: -1px; box-shadow: 0 24px 60px rgba(0, 0, 0, .45); }
 .media.wide { width: min(1040px, 100vw - 2 * var(--gutter)); margin-left: 50%; transform: translateX(-50%); }
-.clip { position: relative; }
-.clip button { position: absolute; right: 12px; top: 12px; height: 30px; padding: 0 12px; border: 1px solid var(--stroke-hi); border-radius: 999px; background: rgba(37, 38, 42, .86); color: var(--text2); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; opacity: 0; transition: opacity .2s; }
-.clip:hover button, .clip button:focus-visible { opacity: 1; }
-.clip button:hover { color: var(--text); }
 
 /* Release charts: the home page chart, two versions per game, sized for the column. */
 .chart-block .chart-bar { margin-top: 0; align-items: center; }
@@ -34,7 +30,10 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline: 2px solid 
 .chart-block h3 small { margin-left: 6px; color: var(--text3); font-size: 14px; font-weight: 500; }
 .chart-block > .legend { margin-top: 14px; font-size: 14px; }
 .chart-wrap { position: relative; }
-.article .chart { margin-top: 0; padding-top: 24px; gap: clamp(10px, 2vw, 28px); }
+.article .chart { margin-top: 0; padding-top: 36px; gap: clamp(10px, 2vw, 28px); }
+/* Readable value labels: two bars per game leave room for them upright at a fixed size. */
+.article .col b { font-size: 12.5px; }
+.article .col.v b { font-size: 14px; }
 .article .cols { height: clamp(120px, 14vw, 180px); }
 .article .gname { font-size: 14px; }
 .article .col.v b { font-size: 15px; }
@@ -47,27 +46,47 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline: 2px solid 
 .pending-note p { margin: 0; padding: 8px 16px; border: 1px solid var(--stroke-hi); border-radius: 999px; background: rgba(37, 38, 42, .92); color: var(--text); font-size: 14px; font-weight: 600; line-height: 1.4; }
 .pending-note[hidden] { display: none; }
 
-/* Blog page: a plain heading and a list of posts (date column, title, one line). */
-.news-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-block: clamp(56px, calc(var(--vh) * 9), 112px) clamp(28px, 4vw, 44px); border-bottom: 1px solid var(--stroke-hi); }
-.news-head h1 { font-size: clamp(40px, min(6vw, calc(var(--vh) * 8.4)), 84px); }
-.rss { display: inline-flex; align-items: center; gap: 7px; margin-bottom: .6em; color: var(--text3); font-size: 15px; font-weight: 600; }
-.rss svg { width: 15px; height: 15px; }
-.rss:hover { color: var(--text); }
-.posts { list-style: none; padding-bottom: clamp(64px, 9vw, 120px); }
-.entry { border-bottom: 1px solid var(--stroke); }
-.entry a { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 8px 40px; padding: clamp(28px, 3vw, 40px) 0; }
-.entry-meta { display: flex; flex-direction: column; gap: 4px; padding-top: .35em; color: var(--text3); font-size: 15px; font-weight: 500; }
-.entry-meta span { color: var(--accent-text); font-size: 13px; font-weight: 600; }
-.entry h2 { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.15; transition: color .15s; }
-.entry a:hover h2 { color: var(--accent-text); }
-.entry p:not(.entry-meta) { margin-top: 10px; max-width: 720px; color: var(--text2); }
+/* Headline numbers: four figures on one hairline row, two by two on phones. */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: clamp(32px, 4vw, 44px) 0 0; border-block: 1px solid var(--stroke); }
+.stats > div { padding: 22px 18px 20px 0; min-width: 0; }
+.stats > div + div { padding-left: 18px; border-left: 1px solid var(--stroke); }
+.stats dt { order: 2; margin-top: 6px; color: var(--text2); font-size: 14px; font-weight: 500; line-height: 1.4; }
+.stats > div { display: flex; flex-direction: column; }
+.stats dd { order: 1; font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif; font-size: clamp(30px, 3.4vw, 42px); font-weight: 700; letter-spacing: -.02em; line-height: 1; color: var(--text); }
+.stats dd small { margin-left: 1px; color: var(--accent-text); font-size: .62em; font-weight: 700; }
+.stats-note { margin-top: 12px; color: var(--text3); font-size: 14px; }
+.article p.stats-note { color: var(--text3); font-size: 14px; line-height: 1.5; }
 
-@media (min-width: 2800px) and (min-height: 1400px) {
-  .entry a { grid-template-columns: 300px minmax(0, 1fr); }
-}
+/* Startup strip: one track per version, gaps drawn to scale in time. */
+.strip-block { padding: clamp(18px, 2.4vw, 26px); border: 1px solid var(--stroke); border-radius: 16px; background: var(--bg-2); }
+.strip-block h3 { font-size: 17px; font-weight: 600; line-height: 1.3; }
+.strip-block h3 small { margin-left: 6px; color: var(--text3); font-size: 14px; font-weight: 500; }
+#strip { position: relative; display: grid; gap: 16px; margin-top: 18px; padding-bottom: 26px; }
+.strip-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 6px; font-size: 14px; }
+.strip-head span { color: var(--text2); font-weight: 600; }
+.strip-head b { color: var(--text3); font-weight: 600; font-variant-numeric: tabular-nums; }
+.strip-row.v .strip-head span, .strip-row.v .strip-head b { color: var(--text); }
+.strip-row svg { display: block; width: 100%; height: 48px; overflow: visible; }
+.strip-row line { stroke: var(--stroke-hi); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.strip-row rect { fill: var(--c2); }
+.strip-row.v rect { fill: var(--accent-hi); }
+.strip-axis { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; color: var(--text3); font-size: 12px; font-variant-numeric: tabular-nums; }
+.strip-axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.strip-axis span:first-child { transform: none; }
+.strip-axis span:last-child { transform: translateX(-100%); }
+
+/* Blog page: every post in full, newest first, one after another; each title links to the post's own page. */
+.article h1 a { color: inherit; }
+.article h1 a:hover { color: var(--accent-text); }
+.post-sep { width: min(720px, 100% - 2 * var(--gutter)); margin: 0 auto; border: 0; border-top: 1px solid var(--stroke-hi); }
+
 @media (max-width: 760px) {
   .media img, .media video { border-radius: 8px; }
-  .clip button { opacity: 1; right: 8px; top: 8px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats > div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .stats > div:nth-child(n+3) { border-top: 1px solid var(--stroke); }
+  .strip-axis span:nth-child(even) { display: none; }
+  .strip-block h3 small { display: block; margin: 2px 0 0; }
   .chart-block h3 small { display: block; margin: 2px 0 0; }
   /* Phones: pending rows at a common width with the note above them instead of over them. */
   .article .cols { height: auto; }
@@ -75,7 +94,24 @@ a:focus-visible, button:focus-visible, video:focus-visible { outline: 2px solid 
   .chart-wrap { display: flex; flex-direction: column; }
   .pending-note { order: -1; position: static; margin: 18px 0 -4px; justify-items: start; }
   .pending-note p { border-radius: 12px; }
-  .entry a { grid-template-columns: 1fr; }
-  .entry-meta { flex-direction: row; gap: 12px; padding-top: 0; }
 }
-main:has(> .posts) { min-height: calc(var(--vh) * 100 - var(--nav-h) - 160px); }
+
+/* Draft placeholders: visible only while the post is a draft. */
+.article .draft-note { color: #d9a23a; font-style: italic; }
+
+/* Post subsections under an h2. */
+.article h3.sub { margin-top: clamp(36px, 4vw, 48px); font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, sans-serif; font-size: clamp(19px, 1.6vw, 22px); font-weight: 650; letter-spacing: -.008em; color: var(--text); line-height: 1.25; scroll-margin-top: calc(var(--nav-h) + 24px); }
+.article h3.sub + p { margin-top: .6em; }
+
+/* Post lists: the prose's size and colour, a little air between items, quiet markers. */
+.article ul { margin-top: 1em; padding-left: 1.25em; display: grid; gap: .6em; list-style: disc; }
+.article li { padding-left: .2em; color: #ccd0d7; font-size: clamp(17px, 1.25vw, 19px); line-height: 1.6; }
+.article li::marker { color: var(--text3); }
+.article li strong { color: var(--text); font-weight: 650; }
+.article li a { color: var(--accent-text); text-decoration: underline; text-decoration-color: rgba(77, 155, 255, .4); text-underline-offset: 3px; }
+.article li a:hover { text-decoration-color: currentColor; }
+
+/* Launcher UI crops: shown at their own size (2x assets at half width), centred in the column. */
+.media.ui img { width: 600px; max-width: 100%; margin-inline: auto; }
+.media.ui figcaption { text-align: center; }
+.article p strong { color: var(--text); font-weight: 650; }

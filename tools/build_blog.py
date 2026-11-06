@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
-"""Builds the blog from blog/posts.json: the post list on the Blog page (blog/index.html), each post's date line, and the
-RSS 2.0 feed at blog/feed.xml. No dependencies; run from anywhere after adding or changing a post:
+"""Builds the blog from blog/posts.json: the Blog page (blog/index.html, every post in full, newest first, in one
+scrolling page), each post's date line, and the RSS 2.0 feed at blog/feed.xml. No dependencies; run from anywhere after adding or changing a post:
 
     python tools/build_blog.py
 
 A post is blog/<slug>/index.html plus one entry in blog/posts.json, newest first:
     slug       folder name under blog/, also the URL (https://venture-emu.org/blog/<slug>/)
-    title      plain-text title (Blog page, feed)
+    title      plain-text title (feed)
     date       publication date, "YYYY-MM-DD", or null while unpublished (shown as "Date TBA" and left out
                of the feed's pubDate)
     kind       small label beside the date, e.g. "Release"
-    summary    one line (Blog page, feed description)
+    summary    one line (feed description)
+
+Each post's page keeps its own URL (links, the feed and sharing point there). The Blog page copies each post's
+<article> with its links and media pointed into the post's folder, the post title linking to that page, and loads
+the post's own scripts (scripts in its <head> with a relative src). A post's scripts must work inside its article
+(look things up under [data-post="<slug>"]), since the Blog page holds every post.
     image      share image, relative to the post folder (feed enclosure; 1200x630 JPEG like og:image)
 """
 import email.utils, html, json, os, re, sys
@@ -43,17 +48,40 @@ def time_tag(post):
     return f'<time data-post-date datetime="{d:%Y-%m-%d}">{d:%B} {d.day}, {d.year}</time>'
 
 
-def entry(post):
+def rebase(fragment, slug):
+    """Points a post's relative links and media (written for blog/<slug>/) at the same files from blog/."""
+    def fix(url):
+        if re.match(r"^(?:[a-z]+:|//|#|/)", url):
+            return url
+        if url.startswith("../../"):
+            return "../" + url[6:]
+        if url.startswith("../"):
+            return url[3:] or "./"
+        return f"{slug}/{url}"
+    fragment = re.sub(r'\b(src|href|poster)="([^"]*)"', lambda m: f'{m.group(1)}="{fix(m.group(2))}"', fragment)
+    return re.sub(r'\bsrcset="([^"]*)"', lambda m: 'srcset="' + ", ".join(
+        " ".join([fix(part.split()[0])] + part.split()[1:]) for part in m.group(1).split(",")) + '"', fragment)
+
+
+def listed(post, page):
+    """The post's article as it appears on the Blog page: no breadcrumb, the title links to the post's own page."""
     s = post["slug"]
-    return f'''    <li class="entry">
-      <a href="{s}/">
-        <p class="entry-meta">{time_tag(post)}<span>{html.escape(post.get("kind", "Post"))}</span></p>
-        <div>
-          <h2 class="display">{html.escape(post["title"])}</h2>
-          <p>{html.escape(post["summary"])}</p>
-        </div>
-      </a>
-    </li>'''
+    art = re.search(r"<article\b.*?</article>", page, re.S)
+    if not art:
+        sys.exit(f"blog/{s}/index.html has no <article>")
+    a = art.group(0)
+    a = re.sub(r'(<p class="meta">)\s*<a href="\.\./">Blog</a>\s*·\s*', r"\1", a, count=1)
+    a = rebase(a, s)
+    a = re.sub(r"<h1>(.*?)</h1>", lambda m: f'<h1><a href="{s}/">{m.group(1)}</a></h1>', a, count=1, flags=re.S)
+    if "data-post=" not in a[:200]:
+        a = a.replace("<article", f'<article data-post="{s}"', 1)
+    a = a.replace("<article", f'<article id="{s}"', 1)
+    return "    " + a
+
+
+def scripts(post, page):
+    head = page.split("</head>", 1)[0]
+    return [f'{post["slug"]}/{src}' for src in re.findall(r'<script src="([^":]+)"[^>]*>', head) if not src.startswith("../")]
 
 
 def feed(posts):
@@ -96,6 +124,7 @@ def feed(posts):
 
 def main():
     posts = json.loads(read(os.path.join(BLOG, "posts.json")))
+    pages = []
     for p in posts:
         page = os.path.join(BLOG, p["slug"], "index.html")
         if not os.path.exists(page):
@@ -104,13 +133,20 @@ def main():
         out = re.sub(r"<time data-post-date[^>]*>.*?</time>", time_tag(p), src)
         if out != src:
             write(page, out)
+        pages.append(out)
     index = os.path.join(BLOG, "index.html")
     src = read(index)
-    a, b = "<!-- posts:start (tools/build_blog.py) -->", "<!-- posts:end -->"
-    if a not in src or b not in src:
-        sys.exit("blog/index.html lacks the posts markers")
-    head, rest = src.split(a, 1)
-    write(index, head + a + "\n" + "\n".join(entry(p) for p in posts) + "\n    " + b + rest.split(b, 1)[1])
+    sep = '\n\n    <hr class="post-sep">\n\n'
+    body = sep.join(listed(p, page) for p, page in zip(posts, pages))
+    js = [f'  <script src="{x}" defer></script>' for p, page in zip(posts, pages) for x in scripts(p, page)]
+    js.append('  <script src="media.js" defer></script>')
+    for a, b, new in (("<!-- posts:start (tools/build_blog.py) -->", "<!-- posts:end -->", "\n" + body + "\n    "),
+                      ("<!-- scripts:start (tools/build_blog.py) -->", "<!-- scripts:end -->", "\n" + "\n".join(js) + "\n  ")):
+        if a not in src or b not in src:
+            sys.exit(f"blog/index.html lacks the {a} marker")
+        head, rest = src.split(a, 1)
+        src = head + a + new + b + rest.split(b, 1)[1]
+    write(index, src)
     write(os.path.join(BLOG, "feed.xml"), feed(posts))
     print(f"{len(posts)} post(s): blog/index.html, blog/feed.xml")
 

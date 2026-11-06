@@ -20,6 +20,11 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../blog.css">
   <link rel="alternate" type="application/rss+xml" title="Venture Blog" href="feed.xml">
+  <!-- scripts:start (tools/build_blog.py) -->
+  <script src="0-2-0/data.js" defer></script>
+  <script src="0-2-0/post.js" defer></script>
+  <script src="media.js" defer></script>
+  <!-- scripts:end -->
 </head>
 <body>
 <header class="nav">
@@ -38,24 +43,118 @@
   </div>
 </header>
 
-<main id="top" class="wrap">
-  <header class="news-head">
-    <h1 class="display">Blog</h1>
-    <a class="rss" href="feed.xml"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2.2" fill="currentColor"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span>RSS</span></a>
-  </header>
-  <ol class="posts">
+<main id="top">
     <!-- posts:start (tools/build_blog.py) -->
-    <li class="entry">
-      <a href="0-2-0/">
-        <p class="entry-meta"><time data-post-date class="tbd" datetime="">Date TBA</time><span>Release</span></p>
-        <div>
-          <h2 class="display">What&#x27;s new in Venture 0.2.0</h2>
-          <p>Less stutter, remappable controls, per-game resolution and frame rate, and mixed reality on more setups.</p>
+    <article id="0-2-0" class="article" data-post="0-2-0">
+    <header class="article-head">
+      <p class="meta"><time data-post-date datetime="2026-11-06">November 6, 2026</time></p>
+      <h1><a href="0-2-0/">What's new in Venture 0.2.0</a></h1>
+    </header>
+
+    <dl class="stats">
+      <div><dt>less video memory</dt><dd><b data-stat="vram">39</b><small>%</small></dd></div>
+      <div><dt>less memory overall</dt><dd><b data-stat="commit">25</b><small>%</small></dd></div>
+      <div><dt>less startup hitching</dt><dd><b data-stat="startup">44</b><small>%</small></dd></div>
+      <div><dt>less stalling in play</dt><dd><b data-stat="play">45</b><small>%</small></dd></div>
+    </dl>
+    <h2 id="stutter">Smoother</h2>
+    <p>A Quest game's code is built for ARM processors, and its shaders for a phone GPU. Venture translates both for your PC as you play. In 0.1.0, each time a game reached something new, that translation could show up as a hitch, and it happened again every time.</p>
+    <p>0.2.0 does a lot of work to fix that:</p>
+    <ul>
+      <li>Everything Venture translates is compressed and stored on disk, and the next launch loads it instead of translating again.</li>
+      <li>Spare CPU threads translate code the game is likely to reach soon at low priority so they stay out of the game's way, preventing hitches before they happen.</li>
+      <li>Pipelines are built and textures are decoded off the main thread instead of stalling the frame that needs them, and every game's pipelines are cached on disk.</li>
+    </ul>
+
+    <p>A game's first seconds in a new area are where translation hurts most, because everything is new. Across all seven games on 0.2.0, startup hitching drops <span data-stat="startup">44</span>%.</p>
+
+    <p>Once a game is going, 0.2.0 stalls less in every game we measured. Batman's first area used to open with a 2.2&nbsp;second freeze; now it's 0.7&nbsp;seconds. AC Nexus's worst hitch went from 222 to 35&nbsp;ms. Across the six games that had stalls on 0.1.0 at all, time stalled drops <span data-stat="play">45</span>%.</p>
+    <figure class="chart-block">
+      <div class="chart-bar">
+        <h3>Time stalled in play <small>seconds per minute, lower is better</small></h3>
+        <div class="tabs" role="tablist" aria-label="Launch" data-chart="stalls">
+          <button role="tab" aria-selected="true" data-metric="hot">Hot</button>
+          <button role="tab" aria-selected="false" data-metric="cold">Cold</button>
         </div>
-      </a>
-    </li>
+      </div>
+      <div class="legend"><span><i class="v"></i>Venture 0.2.0</span><span><i class="old"></i>Venture 0.1.0</span></div>
+      <div class="chart-wrap">
+        <div class="chart" id="chart-stalls"></div>
+        <div class="pending-note" id="note-stalls"><p>Numbers coming soon</p></div>
+      </div>
+      <figcaption data-hw></figcaption>
+    </figure>
+    <h3 class="sub" id="memory">Memory</h3>
+    <p>Every game we measured needs at least a third less video memory, up to <span data-stat="vram_max">48</span>% less. Most of that comes from keeping textures in compact GPU formats whenever that loses nothing. It leaves room on 8 and 12&nbsp;GB cards, and because Windows counts a game's video memory against the memory it can hand out, it makes out-of-memory crashes much less likely too.</p>
+    <figure class="chart-block">
+      <div class="chart-bar">
+        <h3>Video memory <small>lower is better</small></h3>
+      </div>
+      <div class="legend"><span><i class="v"></i>Venture 0.2.0</span><span><i class="old"></i>Venture 0.1.0</span></div>
+      <div class="chart-wrap">
+        <div class="chart" id="chart-vram"></div>
+        <div class="pending-note" id="note-vram"><p>Numbers coming soon</p></div>
+      </div>
+      <figcaption data-hw></figcaption>
+    </figure>
+
+    <h2 id="controls">Customize your controls</h2>
+    <p>The new Controls page shows the controller you actually own, with a line from each Quest button to the button it uses. It opens on the controller you have connected, you can search for any other, and you can drag a controller to turn it around.</p>
+    <p>Every Quest button can go anywhere: a single button, a held button or two buttons pressed together. One set of defaults works the same on SteamVR, Meta Link, Virtual Desktop, Monado and WiVRn, or you can choose your own setup that works for you.</p>
+    <figure class="media wide clip">
+      <video autoplay muted loop playsinline preload="metadata" width="1600" height="1000" poster="0-2-0/media/controls-clip-poster.webp" aria-label="The Controls page: switching from Valve Index to Touch Plus, PSVR2 Sense and Steam Frame, turning a controller, changing a binding and setting the menu to two buttons">
+        <source src="0-2-0/media/controls-clip.webm" type="video/webm">
+        <source src="0-2-0/media/controls-clip.mp4" type="video/mp4">
+      </video>
+    </figure>
+
+    <h2 id="display">Resolution and frame rate</h2>
+    <p>Games still run at the resolution and refresh rate your runtime picks. If you want something else, you can now set both in Settings for every game, or for one game on its new Settings tab:</p>
+    <ul>
+      <li>Resolution can be your runtime's size, a percentage of it (it works like SteamVR's slider), a custom size, or the size a Quest 3, Quest 2, etc. renders at.</li>
+      <li>Frame rate can be anything from 60 to 240 Hz, or a custom number.</li>
+    </ul>
+    <figure class="media wide clip">
+      <video autoplay muted loop playsinline preload="metadata" width="1600" height="1000" poster="0-2-0/media/display-clip-poster.webp" aria-label="Batman: Arkham Shadow's Settings tab: resolution per eye set to Quest 3, then frame rate set to 120 Hz">
+        <source src="0-2-0/media/display-clip.webm" type="video/webm">
+        <source src="0-2-0/media/display-clip.mp4" type="video/mp4">
+      </video>
+      <figcaption>A game's own Settings tab. Settings › Display has the same rows for every game.</figcaption>
+    </figure>
+
+    <h2 id="mirror">See and hear the game on your PC</h2>
+    <p>Games now show what you see in a normal window on your desktop, so friends can watch or you can record. It's one cheap copy on the GPU's lowest-priority queue, so it doesn't cost the headset frames. Pick the left or right eye and a cropped or whole view, or turn it off.</p>
+    <figure class="media wide">
+      <img src="0-2-0/media/mirror-batman.webp" srcset="0-2-0/media/mirror-batman-720.webp 720w, 0-2-0/media/mirror-batman.webp 1600w" sizes="(max-width: 1100px) 100vw, 1040px" width="1600" height="900" loading="lazy" alt="A dim apartment in Batman: Arkham Shadow, with a lit table lamp, an old television on a dresser and a hallway behind a curtain">
+      <figcaption>Batman: Arkham Shadow in Venture: the left eye, cropped to fill a 16:9 window the way the mirror does.</figcaption>
+    </figure>
+    <p>You can also enable audio from games to play over your PC speakers for recording and streaming.</p>
+
+    <h2 id="mixed-reality">Mixed reality</h2>
+    <p>Venture now supports Mixed Reality in many headsets for games that need it! This change comes courtesy of McFredward's <a href="https://github.com/Villagers654/Venture/pull/34">Venture PR</a>. It's on by default. If your setup can't show your room, games simply play in VR. The <a href="https://github.com/Villagers654/Venture/wiki/Mixed-Reality">wiki</a> has a setup guide for each.</p>
+    <figure class="media wide">
+      <img src="0-2-0/media/mixed-reality.webp" srcset="0-2-0/media/mixed-reality-720.webp 720w, 0-2-0/media/mixed-reality-1440.webp 1440w, 0-2-0/media/mixed-reality.webp 1920w" sizes="(max-width: 1100px) 100vw, 1040px" width="1920" height="1080" loading="lazy" alt="A Quest mixed reality game's board floating in a real room, seen through a Steam Frame's passthrough, with a desk, a racing wheel and a monitor behind it">
+      <figcaption>A Quest mixed reality game in Venture on a Steam Frame. Screenshot by McFredward.</figcaption>
+    </figure>
+
+    <h2 id="more">Everything else</h2>
+    <ul>
+      <li>A game's install dialog can install any build Meta published, beside the ones you already have.</li>
+      <li>The launcher follows your system's language, or pick one in Settings. French is the first translation, and more are welcome.</li>
+      <li>If the built-in sign-in window doesn't work for you, Venture hands the sign-in to your own browser.</li>
+      <li>Texture compression can be set to Always, Automatic or Off for one game or for all of them.</li>
+      <li>A game's ⋯ menu has Show save data, which opens the folder its saves live in.</li>
+      <li>Library search ignores case, accents, punctuation and word order.</li>
+      <li>Games play and record on the audio device your VR runtime names, even when your PC's default output is something else.</li>
+      <li>Games that use the microphone, like The Walking Dead: Saints &amp; Sinners, now record.</li>
+      <li>In-game videos play in more games, including Syberia and Attack on Titan VR, and AC Nexus's menu backdrops show on Virtual Desktop.</li>
+      <li>On Linux, text is sharp at fractional scaling, icons show everywhere, and the window buttons no longer cover the library toolbar.</li>
+      <li>Lots of fixes from your reports. Thank you for sending them.</li>
+    </ul>
+
+    <p class="outro">Found a problem? Press Debug report in Settings and open an <a href="https://github.com/Villagers654/Venture/issues">issue</a>, or come say hi on Discord.</p>
+  </article>
     <!-- posts:end -->
-  </ol>
 </main>
 
 <footer class="wrap footer">
