@@ -1,7 +1,7 @@
 // A Share button at the right of each post's date line, on post pages and the Blog page. It opens the system share
 // sheet where there is one and copies the post's link otherwise. The link is the post's own page.
 (() => {
-  const svg = (body) => '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
+  const svg = (body) => '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
   const icon = svg('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/>');
   const done = svg('<path d="M20 6 9 17l-5-5"/>');
   for (const article of document.querySelectorAll(".article")) {
