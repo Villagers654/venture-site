@@ -13,10 +13,10 @@
       <link>https://venture-emu.org/blog/</link>
     </image>
     <item>
-      <title>Venture 0.2.0: less stutter, your controls, your room</title>
+      <title>What's new in Venture 0.2.0</title>
       <link>https://venture-emu.org/blog/0-2-0/</link>
       <guid isPermaLink="true">https://venture-emu.org/blog/0-2-0/</guid>
-      <description>Far less stutter, a Controls page for every controller, per-game resolution and frame rate, and mixed reality on more setups.</description>
+      <description>Less stutter, remappable controls, per-game resolution and frame rate, and mixed reality on more setups.</description>
       <enclosure url="https://venture-emu.org/blog/0-2-0/media/og.jpg" length="38026" type="image/jpeg"/>
     </item>
   </channel>

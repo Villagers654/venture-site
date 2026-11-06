@@ -4,7 +4,7 @@
 // [0.2.0, 0.1.0] per game. Add, remove or reorder games freely (the charts sort by 0.1.0, worst first).
 window.POST_DATA = {
   versions: ["0.2.0", "0.1.0"],
-  hw: "Core Ultra 9 285K · RTX 5090 · 2800×2856 per eye",
+  hw: "Core Ultra 9 285K, RTX 5090, 2800×2856 per eye",
   // Seconds lost to hitches over the route. first: no saved translations or pipelines (fresh install);
   // next: the launch after that.
   stutter: [

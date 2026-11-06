@@ -42,14 +42,14 @@
   }
 
   // Tabs: each tab list switches its own chart's metric.
-  document.querySelectorAll(".post-sec [role=tab]").forEach((btn) => btn.addEventListener("click", () => {
+  document.querySelectorAll(".article [role=tab]").forEach((btn) => btn.addEventListener("click", () => {
     const group = btn.closest("[role=tablist]");
     group.querySelectorAll("[role=tab]").forEach((b) => b.setAttribute("aria-selected", b === btn));
     CHARTS[group.dataset.chart].metric = btn.dataset.metric;
     draw(group.dataset.chart);
   }));
   // Arrow keys move between tabs within a tab list.
-  document.querySelectorAll(".post-sec [role=tablist]").forEach((list) => list.addEventListener("keydown", (e) => {
+  document.querySelectorAll(".article [role=tablist]").forEach((list) => list.addEventListener("keydown", (e) => {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     const tabs = [...list.querySelectorAll("[role=tab]")], i = tabs.indexOf(document.activeElement);
     if (i < 0) return;

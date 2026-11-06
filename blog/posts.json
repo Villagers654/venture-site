@@ -1,10 +1,10 @@
 [
   {
     "slug": "0-2-0",
-    "title": "Venture 0.2.0: less stutter, your controls, your room",
+    "title": "What's new in Venture 0.2.0",
     "date": null,
     "kind": "Release",
-    "summary": "Far less stutter, a Controls page for every controller, per-game resolution and frame rate, and mixed reality on more setups.",
+    "summary": "Less stutter, remappable controls, per-game resolution and frame rate, and mixed reality on more setups.",
     "image": "media/og.jpg"
   }
 ]
