@@ -46,6 +46,8 @@ section { padding: clamp(56px, min(9vw, calc(var(--vh) * 11)), 120px) 0; }
 .btn.primary:hover { transform: translateY(-1px); }
 .btn.ghost { background: var(--surface-hi); border: 1px solid var(--stroke-hi); color: var(--text); }
 .btn.ghost:hover { background: #3a3c41; }
+/* Donate (Ko-fi): a ghost button whose heart takes Ko-fi's coral. */
+.btn.donate svg { color: #ff5e5b; }
 
 /* Nav */
 .nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px) saturate(140%); background: rgba(26, 27, 30, .72); border-bottom: 1px solid var(--stroke); }
