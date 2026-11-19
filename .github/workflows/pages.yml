@@ -45,6 +45,30 @@ jobs:
               } else {} end
             | . + {repo: env.VENTURE_REPO}' <<<"$releases" > release.json
           cat release.json
+          printf '%s' "$releases" > "$RUNNER_TEMP/releases.json"
+      - name: Latest alpha
+        # /alpha sends visitors to the newest published pre-release. The page asks the GitHub API first; this
+        # build-time URL is its fallback after 2 s, its button link and its no-script refresh, and goes in alpha.json.
+        run: |
+          jq '[.[] | select(.prerelease and (.draft | not))] | sort_by(.published_at) | reverse | .[0] // {}
+            | if .tag_name then {tag: .tag_name, name, published_at, html_url} else {} end
+            | . + {repo: env.VENTURE_REPO}' "$RUNNER_TEMP/releases.json" > alpha.json
+          cat alpha.json
+          python3 - <<'PY'
+          import html, json
+          alpha = json.load(open("alpha.json"))
+          url, repo = alpha.get("html_url", ""), alpha["repo"]
+          page = open("alpha/index.html").read()
+          marker = "<!-- alpha:refresh (pages.yml writes a no-script meta refresh to the newest pre-release here) -->"
+          assert marker in page and 'data-alpha=""' in page
+          if url.startswith(f"https://github.com/{repo}/releases/"):
+              u = html.escape(url, quote=True)
+              page = page.replace(marker, f'<noscript><meta http-equiv="refresh" content="0; url={u}"></noscript>')
+              page = page.replace('data-alpha=""', f'data-alpha="{u}"')
+              page = page.replace(f'id="alpha-link" href="https://github.com/{repo}/releases"', f'id="alpha-link" href="{u}"')
+          open("alpha/index.html", "w").write(page)
+          print(url or "no pre-release: the page relies on the GitHub API")
+          PY
       - name: Version assets
         # Browsers and Cloudflare cache these for hours; a per-commit query makes each deploy load fresh copies.
         run: |
@@ -54,9 +78,9 @@ jobs:
           html = open("index.html").read()
           html = re.sub(r'(href|src)="(style\.css|data\.js|app\.js|assets/[^"?]+)"', lambda m: f'{m[1]}="{m[2]}?v={v}"', html)
           open("index.html", "w").write(html)
-          # Blog pages: their stylesheets, scripts and media, at any depth (../style.css, data.js, media/x.webp).
+          # Blog and alpha pages: their stylesheets, scripts and media, at any depth (../style.css, data.js, media/x.webp).
           import glob
-          for page in glob.glob("blog/**/index.html", recursive=True):
+          for page in glob.glob("blog/**/index.html", recursive=True) + ["alpha/index.html"]:
               html = open(page).read()
               html = re.sub(r'(href|src|poster)="((?:\.\./)*[\w./-]+\.(?:css|js|webp|jpg|png|svg|mp4|webm))"', lambda m: f'{m[1]}="{m[2]}?v={v}"', html)
               open(page, "w").write(html)
