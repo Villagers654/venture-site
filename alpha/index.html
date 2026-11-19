@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- alpha:refresh (pages.yml writes a no-script meta refresh to the newest pre-release here) -->
+  <!-- alpha:refresh (pages.yml writes a no-script meta refresh to the newest release here) -->
   <title>Latest alpha: Venture</title>
   <meta name="description" content="Sends you to the newest Venture alpha (pre-release) on GitHub.">
   <meta name="robots" content="noindex">
@@ -20,13 +20,44 @@
     .go small a { color: var(--accent-text); }
   </style>
   <script>
-    // Newest Venture pre-release: the GitHub API (newest published, non-draft pre-release) first, so a
+    // Newest Venture release, alpha or stable: the newest pre-release unless a stable release is ahead of it
+    // (0.3.0 > 0.3.0-alpha.N > 0.2.5.1, compared as the launcher's updater does). The GitHub API first, so a
     // release published since the last site build counts. If it has not answered within 2 s, or has no
-    // answer, the URL pages.yml resolved at build time; with neither, the button stays on the releases list.
+    // answer, the URL pages.yml chose at build time by the same rule; with neither, the button stays on the
+    // releases list.
     (function () {
       var root = document.documentElement, repo = root.dataset.repo, built = root.dataset.alpha, done = false;
       var ok = function (u) { return typeof u === "string" && u.indexOf("https://github.com/" + repo + "/releases/") === 0; };
       var go = function (u) { done = true; location.replace(u); };
+      // src/launcher/updater.cpp newer_version: "v" prefix, dot-separated numbers, "-..." = pre-release.
+      var parse = function (tag) {
+        tag = String(tag || "");
+        if (tag.charAt(0) === "v") tag = tag.slice(1);
+        var dash = tag.indexOf("-"), pre = false;
+        if (dash >= 0) { pre = dash + 1 < tag.length; tag = tag.slice(0, dash); }
+        var parts = tag.split(".");
+        for (var i = 0; i < parts.length; i++) if (!/^[0-9]+$/.test(parts[i])) return null;
+        return { parts: parts.map(Number), pre: pre };
+      };
+      var newer = function (a, b) {
+        var x = parse(a), y = parse(b);
+        if (!x || !y) return false;
+        for (var i = 0, n = Math.max(x.parts.length, y.parts.length); i < n; i++) {
+          var xi = x.parts[i] || 0, yi = y.parts[i] || 0;
+          if (xi !== yi) return xi > yi;
+        }
+        return y.pre && !x.pre;
+      };
+      var pick = function (list) {
+        var best = null;
+        (Array.isArray(list) ? list : []).forEach(function (r) {
+          if (!r || r.draft || !r.published_at || !parse(r.tag_name)) return;
+          // Equal versions (two alphas of one release) go to the newer publish.
+          if (!best || newer(r.tag_name, best.tag_name) ||
+              (!newer(best.tag_name, r.tag_name) && r.published_at > best.published_at)) best = r;
+        });
+        return best;
+      };
       var fallback = function () {
         if (done) return;
         if (ok(built)) return go(built);
@@ -40,9 +71,7 @@
       fetch("https://api.github.com/repos/" + repo + "/releases?per_page=30", { headers: { Accept: "application/vnd.github+json" } })
         .then(function (r) { return r.ok ? r.json() : []; })
         .then(function (list) {
-          var rel = (Array.isArray(list) ? list : [])
-            .filter(function (r) { return r.prerelease && !r.draft && r.published_at; })
-            .sort(function (a, b) { return a.published_at < b.published_at ? 1 : -1; })[0];
+          var rel = pick(list);
           if (done) return;
           if (rel && ok(rel.html_url)) return go(rel.html_url);
           fallback();

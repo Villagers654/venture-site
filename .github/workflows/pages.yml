@@ -47,19 +47,51 @@ jobs:
           cat release.json
           printf '%s' "$releases" > "$RUNNER_TEMP/releases.json"
       - name: Latest alpha
-        # /alpha sends visitors to the newest published pre-release. The page asks the GitHub API first; this
-        # build-time URL is its fallback after 2 s, its button link and its no-script refresh, and goes in alpha.json.
+        # /alpha sends visitors to the newest Venture release, alpha or stable: the pre-release unless a stable
+        # release is ahead of it (0.3.0 > 0.3.0-alpha.N > 0.2.5.1, compared as the launcher's updater does).
+        # The page asks the GitHub API first with the same rule; this build-time URL is its fallback after 2 s,
+        # its button link and its no-script refresh, and goes in alpha.json.
         run: |
-          jq '[.[] | select(.prerelease and (.draft | not))] | sort_by(.published_at) | reverse | .[0] // {}
-            | if .tag_name then {tag: .tag_name, name, published_at, html_url} else {} end
-            | . + {repo: env.VENTURE_REPO}' "$RUNNER_TEMP/releases.json" > alpha.json
-          cat alpha.json
           python3 - <<'PY'
-          import html, json
-          alpha = json.load(open("alpha.json"))
-          url, repo = alpha.get("html_url", ""), alpha["repo"]
+          import html, json, os
+          repo = os.environ["VENTURE_REPO"]
+          releases = json.load(open(os.environ["RUNNER_TEMP"] + "/releases.json"))
+
+          def parse(tag):
+              # src/launcher/updater.cpp newer_version: "v" prefix, dot-separated numbers, "-..." = pre-release.
+              tag = tag[1:] if tag.startswith("v") else tag
+              base, dash, rest = tag.partition("-")
+              parts = base.split(".")
+              if not all(p.isdigit() and p.isascii() for p in parts):
+                  return None
+              return [int(p) for p in parts], bool(rest)
+
+          def newer(a, b):
+              x, y = parse(a), parse(b)
+              if not x or not y:
+                  return False
+              n = max(len(x[0]), len(y[0]))
+              xp, yp = x[0] + [0] * (n - len(x[0])), y[0] + [0] * (n - len(y[0]))
+              return xp > yp if xp != yp else (y[1] and not x[1])
+
+          best = None
+          for r in releases if isinstance(releases, list) else []:
+              if r.get("draft") or not r.get("published_at") or not parse(r.get("tag_name", "")):
+                  continue
+              # Equal versions (two alphas of one release) go to the newer publish.
+              if best is None or newer(r["tag_name"], best["tag_name"]) or (
+                      not newer(best["tag_name"], r["tag_name"]) and r["published_at"] > best["published_at"]):
+                  best = r
+          alpha = {"repo": repo}
+          if best:
+              alpha |= {"tag": best["tag_name"], "name": best.get("name"), "published_at": best["published_at"],
+                        "html_url": best["html_url"], "prerelease": best["prerelease"]}
+          json.dump(alpha, open("alpha.json", "w"))
+          print(json.dumps(alpha))
+
+          url = alpha.get("html_url", "")
           page = open("alpha/index.html").read()
-          marker = "<!-- alpha:refresh (pages.yml writes a no-script meta refresh to the newest pre-release here) -->"
+          marker = "<!-- alpha:refresh (pages.yml writes a no-script meta refresh to the newest release here) -->"
           assert marker in page and 'data-alpha=""' in page
           if url.startswith(f"https://github.com/{repo}/releases/"):
               u = html.escape(url, quote=True)
@@ -67,7 +99,7 @@ jobs:
               page = page.replace('data-alpha=""', f'data-alpha="{u}"')
               page = page.replace(f'id="alpha-link" href="https://github.com/{repo}/releases"', f'id="alpha-link" href="{u}"')
           open("alpha/index.html", "w").write(page)
-          print(url or "no pre-release: the page relies on the GitHub API")
+          print(url or "no release: the page relies on the GitHub API")
           PY
       - name: Version assets
         # Browsers and Cloudflare cache these for hours; a per-commit query makes each deploy load fresh copies.
